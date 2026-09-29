@@ -72,7 +72,6 @@ ExportedObj/
 *.slnx
 *.suo
 *.tmp
-71b94e74af9be3e369c2caaea58f01218b5cb33b
 *.user
 *.userprefs
 *.pidb
@@ -138,4 +137,3 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
-71b94e74af9be3e369c2caaea58f01218b5cb33b
