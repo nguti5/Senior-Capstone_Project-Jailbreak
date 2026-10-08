@@ -6,8 +6,20 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/TitlePage.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Options.unity
+    guid: 067b685a024492f44b10729a78b3b000
+  - enabled: 1
+    path: Assets/Scenes/LoadGame.unity
+    guid: d5cea950b3ef7c249a96d8b4d5102591
+  - enabled: 1
+    path: Assets/Scenes/RenameField.unity
+    guid: 9ea8c7d05dd613a4588dc4ccedaa3f30
+  - enabled: 1
+    path: Assets/Scenes/Tutorial.unity
+    guid: b2165605c856e3342a301f837dc1bdff
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
