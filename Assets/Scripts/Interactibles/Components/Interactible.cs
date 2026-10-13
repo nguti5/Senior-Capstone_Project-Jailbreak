@@ -1,12 +1,10 @@
 using UnityEngine;
-
+ 
 public class Interactible : MonoBehaviour, IInteractible
 {
-    public void Interact()
+    public void Interact(GameObject interactor)
     {
         Debug.Log("Interacting...");
-        gameObject.GetComponent<MeshRenderer>().material.color = Random.ColorHSV();
+        GetComponent<MeshRenderer>().material.color = Random.ColorHSV();
     }
-
 }
-

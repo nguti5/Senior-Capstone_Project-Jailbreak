@@ -1,4 +1,7 @@
+using UnityEngine;
+ 
 public interface IInteractible
 {
-    void Interact();
+    /// <param name="interactor">The GameObject that triggered the interaction (usually the player).</param>
+    void Interact(GameObject interactor);
 }
