@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
 
         moveInput = InputSystem.actions.FindAction("Move");
-        runInput = InputSystem.actions.FindAction("Run");
+        runInput = InputSystem.actions.FindAction("Sprint");
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
