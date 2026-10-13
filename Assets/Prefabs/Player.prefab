@@ -116,7 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor
   playerCamera: {fileID: 5592753182101974320}
   interactionDistance: 3
-  interactionReference: {fileID: 1781555164194001046, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  interactionReference: {fileID: -7471211009204490832, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!1 &6442140955551992163
 GameObject:
   m_ObjectHideFlags: 0
