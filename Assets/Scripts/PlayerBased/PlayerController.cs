@@ -1,8 +1,7 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.TextCore.Text;
+
 
 [RequireComponent(typeof(CharacterController))]
 
@@ -49,7 +48,7 @@ public class PlayerController : MonoBehaviour
         HandleMovement(moveVector);
         HandleMouse(mouseDelta);
 
-        currentMoveSpeed = runInput.IsPressed() ? RunSpeed : Walkspeed;
+        runInput = InputSystem.actions.FindAction("Sprint");
     }
 
     private void HandleMovement(Vector2 moveVector)
