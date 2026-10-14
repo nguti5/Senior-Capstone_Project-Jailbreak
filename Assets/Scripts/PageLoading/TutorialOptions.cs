@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class TutorialOptions : MonoBehaviour
 {
-    public void Opitons(){
+    public void Options(){
        SceneManager.LoadScene("Options"); 
     }
     
