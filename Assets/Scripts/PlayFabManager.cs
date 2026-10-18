@@ -26,6 +26,9 @@ public class PlayFabManager : MonoBehaviour
         if (success)
         {
             Debug.Log("PlayFab is ready!");
+
+            // We will load TutorialCatalog here after
+            // confirming the catalog API available in SDK 3.0.0.
         }
         else
         {
@@ -96,7 +99,7 @@ public class PlayFabManager : MonoBehaviour
         }
 
         playerEntity = loginResult.Result;
-
+      
         Debug.Log("Player logged into PlayFab successfully.");
 
         if (playerEntity.LoginResult.HasValue)
