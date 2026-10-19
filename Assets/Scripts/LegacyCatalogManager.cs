@@ -4,13 +4,21 @@ using System.Collections;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 public class LegacyCatalogManager : MonoBehaviour
 {
     private const string TitleId = "1A3333";
-    private const string CustomPlayerId = "UnityPlayerId";
+    private const string CustomPlayerId = "UnityPlayerId_Test2";
     private const string CatalogVersion = "TutorialCatalog";
+    private string sessionTicket;
+    private HashSet<string> ownedItemIds = new HashSet<string>();
 
+    public bool HasItem(string itemId)
+    {
+        return ownedItemIds.Contains(itemId);
+    }
+    public bool IsInventoryLoaded { get; private set; } = false;
     [Serializable]
     private class LoginRequest
     {
@@ -80,6 +88,29 @@ public class LegacyCatalogManager : MonoBehaviour
         public string FunctionName;
         public bool GeneratePlayStreamEvent;
     }
+
+    [Serializable]
+    private class CloudScriptResponse
+    {
+        public CloudScriptResult data;
+    }
+
+    [Serializable]
+    private class CloudScriptResult
+    {
+        public bool FunctionResultTooLarge;
+        public string Error;
+        public TutorialKeyClaimResult FunctionResult;
+    }
+
+    [Serializable]
+    private class TutorialKeyClaimResult
+    {
+        public bool success;
+        public bool alreadyClaimed;
+        public string message;
+    }
+
     private IEnumerator Start()
     {
         var login = new LoginRequest
@@ -111,7 +142,7 @@ public class LegacyCatalogManager : MonoBehaviour
                     request.downloadHandler.text
                 );
 
-            string sessionTicket = response?.data?.SessionTicket;
+            sessionTicket = response?.data?.SessionTicket;
 
             if (string.IsNullOrEmpty(sessionTicket))
             {
@@ -177,6 +208,7 @@ public class LegacyCatalogManager : MonoBehaviour
 
     private IEnumerator LoadInventory(string sessionTicket)
     {
+        IsInventoryLoaded = false;
         string url =
             $"https://{TitleId}.playfabapi.com/Client/GetUserInventory";
 
@@ -200,6 +232,7 @@ public class LegacyCatalogManager : MonoBehaviour
                 JsonUtility.FromJson<InventoryResponse>(
                     request.downloadHandler.text
                 );
+            ownedItemIds.Clear();
 
             InventoryItem[] items = response?.data?.Inventory;
 
@@ -213,12 +246,16 @@ public class LegacyCatalogManager : MonoBehaviour
 
             foreach (InventoryItem item in items)
             {
+                ownedItemIds.Add(item.ItemId);
+
                 Debug.Log(
                     $"Owned item: {item.ItemId} | " +
                     $"Instance: {item.ItemInstanceId} | " +
                     $"Remaining uses: {item.RemainingUses}"
                 );
             }
+            IsInventoryLoaded = true;
+            Debug.Log("PlayFab inventory is ready!");
         }
     }
 
@@ -267,4 +304,80 @@ public class LegacyCatalogManager : MonoBehaviour
 
         return request;
     }
+
+
+    public void ClaimTutorialKey(Action<bool> onComplete)
+    {
+        if (string.IsNullOrEmpty(sessionTicket))
+        {
+            Debug.LogWarning("PlayFab login is not ready yet.");
+            onComplete?.Invoke(false);
+            return;
+        }
+
+        StartCoroutine(ClaimTutorialKeyRequest(onComplete));
+    }
+
+
+    private IEnumerator ClaimTutorialKeyRequest(Action<bool> onComplete)
+    {
+        string url =
+            $"https://{TitleId}.playfabapi.com/Client/ExecuteCloudScript";
+
+        var body = new CloudScriptRequest
+        {
+            FunctionName = "claimTutorialKey",
+            GeneratePlayStreamEvent = false
+        };
+
+        using (UnityWebRequest request =
+            CreatePostRequest(url, JsonUtility.ToJson(body)))
+        {
+            request.SetRequestHeader("X-Authorization", sessionTicket);
+
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError(
+                    "Tutorial key claim request failed: " +
+                    request.downloadHandler.text
+                );
+
+                onComplete?.Invoke(false);
+                yield break;
+            }
+
+
+            Debug.Log(
+                "Tutorial key claim response: " +
+                request.downloadHandler.text
+            );
+
+            CloudScriptResponse response =
+                JsonUtility.FromJson<CloudScriptResponse>(
+                    request.downloadHandler.text
+                );
+
+            if (response?.data?.FunctionResult != null &&
+    response.data.FunctionResult.success)
+            {
+                Debug.Log("PlayFab confirmed the player owns the tutorial key!");
+
+                yield return StartCoroutine(LoadInventory(sessionTicket));
+
+                onComplete?.Invoke(true);
+            }
+            else
+            {
+                Debug.LogError(
+                    "PlayFab did not confirm the tutorial key claim."
+                );
+
+                onComplete?.Invoke(false);
+            }
+
+        }
+    }
+
 }

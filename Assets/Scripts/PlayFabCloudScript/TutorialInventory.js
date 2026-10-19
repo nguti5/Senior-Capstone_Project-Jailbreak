@@ -330,3 +330,62 @@ handlers.testTutorialInventory = function (args, context) {
         playerId: playerId
     };
 };
+
+handlers.claimTutorialKey = function (args, context) {
+    var playerId = currentPlayerId;
+    var itemId = "tutorial_key";
+
+    var claimData = server.GetUserInternalData({
+        PlayFabId: playerId,
+        Keys: ["tutorial_key_claimed"]
+    });
+
+    if (claimData.Data && claimData.Data.tutorial_key_claimed &&
+        claimData.Data.tutorial_key_claimed.Value === "true") {
+        return {
+            success: true,
+            alreadyClaimed: true,
+            message: "Tutorial key was already claimed."
+        };
+    }
+
+    var inventory = server.GetUserInventory({
+        PlayFabId: playerId
+    });
+
+    for (var i = 0; i < inventory.Inventory.length; i++) {
+        if (inventory.Inventory[i].ItemId === itemId) {
+            server.UpdateUserInternalData({
+                PlayFabId: playerId,
+                Data: {
+                    tutorial_key_claimed: "true"
+                }
+            });
+
+            return {
+                success: true,
+                alreadyClaimed: true,
+                message: "Player already owns the tutorial key."
+            };
+        }
+    }
+
+    var grantResult = server.GrantItemsToUser({
+        PlayFabId: playerId,
+        ItemIds: [itemId],
+        CatalogVersion: "TutorialCatalog"
+    });
+
+    server.UpdateUserInternalData({
+        PlayFabId: playerId,
+        Data: {
+            tutorial_key_claimed: "true"
+        }
+    });
+
+    return {
+        success: true,
+        alreadyClaimed: false,
+        message: "Tutorial key granted successfully!"
+    };
+};
