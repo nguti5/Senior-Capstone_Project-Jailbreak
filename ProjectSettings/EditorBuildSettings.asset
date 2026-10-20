@@ -35,6 +35,21 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level1_Scenes/Level1.unity
     guid: 43c1fa7655993d64fbdb3be1c019a1e5
+  - enabled: 1
+    path: Assets/Scenes/Level1_Scenes/Email-Level1.unity
+    guid: 9f5dd01c3ab775f4eb96fa1f53b4b828
+  - enabled: 1
+    path: Assets/Scenes/Level1_Scenes/ThreatAnalyzer-Level1.unity
+    guid: 656cd7ae3f4072f4ab0f303212b9bb47
+  - enabled: 1
+    path: Assets/Scenes/Level1_Scenes/Files-Level1.unity
+    guid: 7a72c44946c85164abace2d3269ab422
+  - enabled: 1
+    path: Assets/Scenes/Level1_Scenes/MinionBattle-Level1.unity
+    guid: c563c0f9cb7830945b7a27e681e6d48e
+  - enabled: 1
+    path: Assets/Scenes/Level1_Scenes/BossBattle-Level1.unity
+    guid: a851c35e99f632f49aea5ae15714bada
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
