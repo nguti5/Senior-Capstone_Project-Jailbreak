@@ -18,6 +18,10 @@ public class LegacyCatalogManager : MonoBehaviour
     {
         return ownedItemIds.Contains(itemId);
     }
+    public List<string> GetOwnedItemIds()
+    {
+        return new List<string>(ownedItemIds);
+    }
     public bool IsInventoryLoaded { get; private set; } = false;
     [Serializable]
     private class LoginRequest
