@@ -729,6 +729,28 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!114 &434795378 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4217214417798346436, guid: 23037fed9f539324f960f7f9cb59edc1, type: 3}
+  m_PrefabInstance: {fileID: 767120192}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 667da657ede8027499635095bb177937, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractor
+--- !u!114 &434795379 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 932512607637208443, guid: 23037fed9f539324f960f7f9cb59edc1, type: 3}
+  m_PrefabInstance: {fileID: 767120192}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36801a8fb27c2e14b8dcb7f26208ea21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
 --- !u!1 &492076336
 GameObject:
   m_ObjectHideFlags: 0
@@ -1317,6 +1339,8 @@ MonoBehaviour:
   inventoryPanel: {fileID: 1648345515}
   inventoryItemContainer: {fileID: 795297662}
   inventorySlotPrefab: {fileID: 3904825348404227397, guid: 7c35ab7c7dde917418a80fa8a98534fa, type: 3}
+  playerController: {fileID: 434795379}
+  playerInteractor: {fileID: 434795378}
 --- !u!1 &1155321884
 GameObject:
   m_ObjectHideFlags: 0
