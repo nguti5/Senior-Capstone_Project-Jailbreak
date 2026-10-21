@@ -4,6 +4,7 @@ using System.Collections;
 
 public class TutorialKeyPickup : MonoBehaviour, IInteractible
 {
+    private const string KeyItemId = "tutorial_key";
     private bool isClaiming = false;
 
 
@@ -30,6 +31,7 @@ public class TutorialKeyPickup : MonoBehaviour, IInteractible
         if (catalogManager.HasItem("tutorial_key"))
         {
             Debug.Log("Tutorial key already owned. Hiding pickup.");
+            NotifyObjectives();
             gameObject.SetActive(false);
         }
     }
@@ -63,11 +65,18 @@ public class TutorialKeyPickup : MonoBehaviour, IInteractible
         if (success)
         {
             Debug.Log("Tutorial key collected successfully!");
+            NotifyObjectives();
             gameObject.SetActive(false);
         }
         else
         {
             Debug.LogWarning("Tutorial key collection failed. Try again.");
+        }
+    }
+
+    private void NotifyObjectives(){
+        if (ObjectiveManager.Instance != null){
+            ObjectiveManager.Instance.NotifyItemAcquired(KeyItemId);
         }
     }
 }

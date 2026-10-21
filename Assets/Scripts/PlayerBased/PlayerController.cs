@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]private float Walkspeed = 5.5f;
-    [SerializeField]private float RunSpeed = 9.0f;
+    // [SerializeField]private float RunSpeed = 9.0f;
     [SerializeField] private float GravityForce = 20.0f;
     [SerializeField]private float LookSensitivity = 0.2f;
     [SerializeField]private float PlayerCameraClamp = 90.0f;
