@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
+using UnityEngine.Events;
 using TMPro;
 
 [Serializable]
@@ -10,19 +12,30 @@ public class Objective
     public string id;                 // e.g. "get_key"
     [TextArea(1, 3)]
     public string description;        // e.g. "Find the key"
-    public string completeOnItemId;   // optional: item that completes it, e.g. "key"
+    public string completeOnItemId;   // optional: item in inventory that completes it, e.g. "tutorial_key"
 }
 
 public class ObjectiveManager : MonoBehaviour
 {
     public static ObjectiveManager Instance;
 
+    [Header("UI")]
     public GameObject panel;
     public TMP_Text objectiveText;
-    public List<Objective> objectives;
 
-    int current = -1;
-    bool advancing;
+    [Header("Objectives")]
+    public List<Objective> objectives;
+    [Tooltip("Show future objectives greyed out. Off = they stay hidden until reached.")]
+    public bool showUpcoming = false;
+
+    [Header("When everything is done")]
+    public float finishDelay = 1.5f;
+    public bool hidePanelWhenDone = true;
+    public UnityEvent onAllComplete;
+
+    int completed;   // how many objectives are checked off
+    bool started;
+    bool finished;
     readonly HashSet<string> owned = new HashSet<string>();
 
     void Awake()
@@ -31,11 +44,17 @@ public class ObjectiveManager : MonoBehaviour
         panel.SetActive(false);
     }
 
-    // Call this when the step-by-step tutorial ends
+    // Call when the step-by-step tutorial ends
     public void Begin()
     {
-        current = 0;
-        Show();
+        if (started) return;
+        started = true;
+        completed = 0;
+        panel.SetActive(true);
+
+        SkipOwned();
+        Refresh();
+        CheckFinished();
     }
 
     // Call from your inventory code when an item is confirmed added
@@ -43,48 +62,70 @@ public class ObjectiveManager : MonoBehaviour
     {
         owned.Add(itemId);
 
-        if (CurrentIsValid() && objectives[current].completeOnItemId == itemId)
-            StartAdvance();
+        if (IsActive() && objectives[completed].completeOnItemId == itemId)
+            CompleteCurrent();
     }
 
     // Callable from UnityEvents, e.g. SceneDoor's On Before Load
     public void Complete(string objectiveId)
     {
-        if (CurrentIsValid() && objectives[current].id == objectiveId)
-            StartAdvance();
+        if (IsActive() && objectives[completed].id == objectiveId)
+            CompleteCurrent();
     }
 
-    bool CurrentIsValid() => current >= 0 && current < objectives.Count && !advancing;
+    bool IsActive() => started && !finished && completed < objectives.Count;
 
-    void Show()
+    bool IsOwned(Objective o) =>
+        !string.IsNullOrEmpty(o.completeOnItemId) && owned.Contains(o.completeOnItemId);
+
+    // if the player already has the needed item, check the objective off immediately
+    void SkipOwned()
     {
-        if (current >= objectives.Count)
+        while (completed < objectives.Count && IsOwned(objectives[completed]))
+            completed++;
+    }
+
+    void CompleteCurrent()
+    {
+        completed++;
+        SkipOwned();
+        Refresh();
+        CheckFinished();
+    }
+
+    void CheckFinished()
+    {
+        if (completed >= objectives.Count && !finished)
         {
-            panel.SetActive(false); // all done
-            return;
+            finished = true;
+            StartCoroutine(FinishAfterDelay());
+        }
+    }
+
+    IEnumerator FinishAfterDelay()
+    {
+        yield return new WaitForSecondsRealtime(finishDelay);   // lets the player see the last box checked
+        if (hidePanelWhenDone) panel.SetActive(false);
+        onAllComplete?.Invoke();
+    }
+
+    void Refresh()
+    {
+        var sb = new StringBuilder();
+
+        for (int i = 0; i < objectives.Count; i++)
+        {
+            string text = objectives[i].description;
+
+            if (i < completed)
+                sb.AppendLine("<color=#7FBF7F>[x]<s> " + text + "</s></color><br><size=10><br></size>");   // done
+            else if (i == completed)
+                sb.AppendLine("<b>[ ] " + text + "</b><br><size=10><br></size>");                          // current
+            else if (showUpcoming)
+                // add opacity change color to: 75% visible - #888888BF, 50% visible - #88888880, 30% visible - #8888884D
+                sb.AppendLine("<color=#888888>[ ] " + text + "</color><br><size=10><br></size>");        // upcoming
         }
 
-        panel.SetActive(true);
-        objectiveText.text = objectives[current].description;
-
-        // if the player already has the item, finish it right away
-        string itemId = objectives[current].completeOnItemId;
-        if (!string.IsNullOrEmpty(itemId) && owned.Contains(itemId))
-            StartAdvance();
-    }
-
-    void StartAdvance()
-    {
-        if (!advancing) StartCoroutine(Advance());
-    }
-
-    IEnumerator Advance()
-    {
-        advancing = true;
-        objectiveText.text = "<s>" + objectives[current].description + "</s>"; // strikethrough
-        yield return new WaitForSecondsRealtime(1.5f);
-        advancing = false;
-        current++;
-        Show();
+        objectiveText.text = sb.ToString().TrimEnd();
     }
 }
