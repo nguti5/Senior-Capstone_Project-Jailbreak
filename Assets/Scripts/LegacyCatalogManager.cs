@@ -9,7 +9,7 @@ using System.Collections.Generic;
 public class LegacyCatalogManager : MonoBehaviour
 {
     private const string TitleId = "1A3333";
-    private const string CustomPlayerId = "UnityPlayerId_Test3";
+    private const string CustomPlayerId = "UnityPlayerId_Test6";
     private const string CatalogVersion = "TutorialCatalog";
     private string sessionTicket;
     private HashSet<string> ownedItemIds = new HashSet<string>();
