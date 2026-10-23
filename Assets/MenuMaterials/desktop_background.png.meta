@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 72dcae8e93967ae4a87170058de6d639
+guid: b4f6dc882faaec34fb3bdb907be3954a
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -449712076736121542
-    second: taskbar_0
+      213: -5436166774988901451
+    second: desktop_background_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -102,23 +102,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: taskbar_0
+      name: desktop_background_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 1920
-        height: 83
+        height: 1080
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 999}
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a35b0f6bf3d42c9f0800000000000000
-      internalID: -449712076736121542
+      spriteID: 5b37105ce1bde84b0800000000000000
+      internalID: -5436166774988901451
       vertices: []
       indices: 
       edges: []
@@ -127,7 +127,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 26adf2f0fb4ecf7488d96837a39c2249
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -137,7 +137,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      taskbar_0: -449712076736121542
+      desktop_background_0: -5436166774988901451
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
