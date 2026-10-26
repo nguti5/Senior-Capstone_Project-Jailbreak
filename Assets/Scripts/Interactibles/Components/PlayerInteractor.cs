@@ -89,16 +89,35 @@ public class PlayerInteractor : MonoBehaviour
             interactionPrompt.HidePrompt();
     }
 
+
     private void PlayerInteracted(InputAction.CallbackContext context)
     {
+        Debug.Log("E KEY PRESSED");
+
         Ray ray = new Ray(playerCamera.position, playerCamera.forward);
 
-        if (!Physics.Raycast(ray, out RaycastHit hitInfo, interactionDistance))
-            return;
-
-        if (hitInfo.collider.TryGetComponent(out IInteractible interactible))
+        if (Physics.Raycast(ray, out RaycastHit hitInfo, interactionDistance))
         {
-            interactible.Interact(gameObject);
+            Debug.Log("Raycast hit: " + hitInfo.collider.gameObject.name);
+
+            IInteractible interactible =
+                hitInfo.collider.GetComponentInParent<IInteractible>();
+
+            if (interactible != null)
+            {
+                Debug.Log("Interactable found!");
+                interactible.Interact(gameObject);
+            }
+            else
+            {
+                Debug.Log("No interactable found on this object.");
+            }
+        }
+        else
+        {
+            Debug.Log("Raycast hit nothing.");
         }
     }
+
+
 }
