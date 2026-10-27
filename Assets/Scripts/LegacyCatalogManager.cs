@@ -8,6 +8,8 @@ using System.Collections.Generic;
 
 public class LegacyCatalogManager : MonoBehaviour
 {
+    public static LegacyCatalogManager Instance { get; private set; }
+
     private const string TitleId = "1A3333";
     private const string CustomPlayerId = "UnityPlayerId_Test9";
     private const string CatalogVersion = "TutorialCatalog";
@@ -115,8 +117,17 @@ public class LegacyCatalogManager : MonoBehaviour
         public string message;
     }
 
+    private void Awake()                                                // NEW
+    {
+        if (Instance != null) { Destroy(gameObject); return; }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
     private IEnumerator Start()
     {
+        if (Instance != this) yield break;
+        
         var login = new LoginRequest
         {
             TitleId = TitleId,
@@ -156,6 +167,7 @@ public class LegacyCatalogManager : MonoBehaviour
 
             Debug.Log("Legacy PlayFab login successful!");
 
+            yield return StartCoroutine(LoadSlots(sessionTicket));
             yield return StartCoroutine(LoadCatalog(sessionTicket));
             yield return StartCoroutine(LoadInventory(sessionTicket));
             yield return StartCoroutine(TestCloudScript(sessionTicket));
@@ -309,6 +321,102 @@ public class LegacyCatalogManager : MonoBehaviour
         return request;
     }
 
+    // ------------- save slot code -------------
+    [Serializable] private class UserDataRequest { public string[] Keys; }
+    [Serializable] private class RemoveKeysRequest { public string[] KeysToRemove; }
+    [Serializable] private class UserDataRecord { public string Value; }
+    [Serializable] private class UserDataMap
+    {
+        public UserDataRecord Slot0;
+        public UserDataRecord Slot1;
+        public UserDataRecord Slot2;
+    }
+    [Serializable] private class UserDataResult { public UserDataMap Data; }
+    [Serializable] private class UserDataResponse { public UserDataResult data; }
+
+    private IEnumerator LoadSlots(string sessionTicket)
+    {
+        string url = $"https://{TitleId}.playfabapi.com/Client/GetUserData";
+        var body = new UserDataRequest { Keys = new[] { "Slot0", "Slot1", "Slot2" } };
+
+        using (UnityWebRequest request = CreatePostRequest(url, JsonUtility.ToJson(body)))
+        {
+            request.SetRequestHeader("X-Authorization", sessionTicket);
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Load slots failed: " + request.downloadHandler.text);
+                yield break;
+            }
+
+            UserDataResponse response =
+                JsonUtility.FromJson<UserDataResponse>(request.downloadHandler.text);
+            UserDataMap map = response?.data?.Data;
+
+            SaveManager.Slots[0] = ParseSlot(map?.Slot0);
+            SaveManager.Slots[1] = ParseSlot(map?.Slot1);
+            SaveManager.Slots[2] = ParseSlot(map?.Slot2);
+            SaveManager.Loaded = true;
+            Debug.Log("Save slots loaded.");
+        }
+    }
+
+    private static SlotData ParseSlot(UserDataRecord record)
+    {
+        if (record == null || string.IsNullOrEmpty(record.Value)) return null;
+        return JsonUtility.FromJson<SlotData>(record.Value);
+    }
+
+    public void SaveSlot(int slot, Action<bool> onComplete)
+    {
+        if (string.IsNullOrEmpty(sessionTicket)) { onComplete?.Invoke(false); return; }
+        StartCoroutine(SaveSlotRequest(slot, onComplete));
+    }
+
+    private IEnumerator SaveSlotRequest(int slot, Action<bool> onComplete)
+    {
+        string url = $"https://{TitleId}.playfabapi.com/Client/UpdateUserData";
+
+        // PlayFab stores each value as a string, so the slot's JSON is escaped and embedded as one
+        string inner = JsonUtility.ToJson(SaveManager.Slots[slot]);
+        string escaped = inner.Replace("\\", "\\\\").Replace("\"", "\\\"");
+        string json = "{\"Data\":{\"Slot" + slot + "\":\"" + escaped + "\"}}";
+
+        using (UnityWebRequest request = CreatePostRequest(url, json))
+        {
+            request.SetRequestHeader("X-Authorization", sessionTicket);
+            yield return request.SendWebRequest();
+
+            bool ok = request.result == UnityWebRequest.Result.Success;
+            if (!ok) Debug.LogError("Save slot failed: " + request.downloadHandler.text);
+            onComplete?.Invoke(ok);
+        }
+    }
+
+    public void DeleteSlot(int slot, Action<bool> onComplete)
+    {
+        if (string.IsNullOrEmpty(sessionTicket)) { onComplete?.Invoke(false); return; }
+        StartCoroutine(DeleteSlotRequest(slot, onComplete));
+    }
+
+    private IEnumerator DeleteSlotRequest(int slot, Action<bool> onComplete)
+    {
+        string url = $"https://{TitleId}.playfabapi.com/Client/UpdateUserData";
+        var body = new RemoveKeysRequest { KeysToRemove = new[] { "Slot" + slot } };
+
+        using (UnityWebRequest request = CreatePostRequest(url, JsonUtility.ToJson(body)))
+        {
+            request.SetRequestHeader("X-Authorization", sessionTicket);
+            yield return request.SendWebRequest();
+
+            bool ok = request.result == UnityWebRequest.Result.Success;
+            if (ok) SaveManager.Slots[slot] = null;
+            else Debug.LogError("Delete slot failed: " + request.downloadHandler.text);
+            onComplete?.Invoke(ok);
+        }
+    }
+    // ------------- end of save slot code -------------
 
     public void ClaimTutorialKey(Action<bool> onComplete)
     {
