@@ -24,15 +24,43 @@ public class CreatureBase : ScriptableObject
     [SerializeField] private List<KnownAttack> knownAttacks;
 
     public List<KnownAttack> KnownAttacks => knownAttacks; 
+
+}
+
     public enum CreatureType
     {
-        normal,
-        worm,
-        trojan,
-        bot,
-        adware
+        force,
+        shock,
+        burn,
+        freeze,
+        radient,
+        toxic,
+        blast
 
     }
+
+    public class TypeMatrix //likely will just be a flat weakness to damage type over pokemon style elemental affinity
+{
+    private static float[][] matrix =
+    {
+        //                          force  shock  burn   frze   rad    tox    blst 
+        /*force row */ new float[]{1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  1.0f},
+        /*shock row */ new float[]{1.0f,  1.5f,  1.0f,  1.0f,  1.0f,  1.0f,  1.0f},
+        /*burn  row */ new float[]{1.0f,  1.0f,  1.5f,  1.0f,  1.0f,  1.0f,  1.0f},
+        /*freze row */ new float[]{1.0f,  1.0f,  1.0f,  1.5f,  1.0f,  1.0f,  1.0f},
+        /*rad   row */ new float[]{1.0f,  1.0f,  1.0f,  1.0f,  1.5f,  1.0f,  1.0f},
+        /*toxic row */ new float[]{1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  1.5f,  1.0f},
+        /*blast row */ new float[]{1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  1.0f,  1.5f},
+    };
+
+    public static float GetMultEffectiveness(CreatureType attackType, CreatureType defenderType)
+    {
+        int row = (int)attackType;
+        int col = (int)defenderType;
+
+        return matrix[row][col];
+    }
+}
 
 
     [Serializable]
@@ -43,4 +71,3 @@ public class CreatureBase : ScriptableObject
         public AttackBase Attack => attack;
         public int Level => level;
     }
-}

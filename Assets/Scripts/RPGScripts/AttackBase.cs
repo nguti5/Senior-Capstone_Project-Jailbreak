@@ -8,13 +8,14 @@ public class AttackBase : ScriptableObject
     [TextArea] [SerializeField] private string description;
     public string Description => description;
 
-    //[SerializeField] private CreatureType type;
+    [SerializeField] private CreatureType type;
     [SerializeField] private int power;
     public int Power => power;
     [SerializeField] private int accuracy;
     public int Accuracy => accuracy;
     [SerializeField] private int mp;
     public int MP => mp;
-        
+    
+    public CreatureType Type => type;
     
 }
