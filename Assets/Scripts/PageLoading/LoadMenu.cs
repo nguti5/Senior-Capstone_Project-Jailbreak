@@ -29,8 +29,7 @@ public class LoadMenu : MonoBehaviour
         }
 
         SaveManager.CurrentSlot = slot;
-        string next = SaveManager.HasSave(slot) ? "Tutorial" : "RenameField";
-        SceneManager.LoadScene(next);
+        SceneManager.LoadScene(SaveManager.HasSave(slot) ? SaveManager.ResumeScene() : "RenameField");
     }
 
     public void DeleteSlot(int slot)
