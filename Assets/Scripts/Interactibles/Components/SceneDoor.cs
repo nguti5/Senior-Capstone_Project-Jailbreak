@@ -19,9 +19,18 @@ public class SceneDoor : MonoBehaviour, IInteractible
     [Header("Events (hook up sounds, fades, UI messages, etc.)")]
     [SerializeField] private UnityEvent onBeforeLoad;
     [SerializeField] private UnityEvent onLockedAttempt;
+
+    [SerializeField] private string unlockedByCheckpoint;
  
     public void Interact(GameObject interactor)
     {
+        Debug.Log($"Door '{name}': locked={isLocked}, slot={SaveManager.CurrentSlot}, " +
+          $"checkpoint '{unlockedByCheckpoint}' complete={SaveManager.IsComplete(unlockedByCheckpoint)}");
+
+        if (isLocked && !string.IsNullOrEmpty(unlockedByCheckpoint)
+        && SaveManager.IsComplete(unlockedByCheckpoint))
+        isLocked = false;
+
         if (isLocked)
         {
             onLockedAttempt?.Invoke();

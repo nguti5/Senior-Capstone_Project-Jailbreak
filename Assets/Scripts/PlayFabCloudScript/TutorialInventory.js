@@ -331,61 +331,63 @@ handlers.testTutorialInventory = function (args, context) {
     };
 };
 
+function slotOwnsItem(playerId, itemId, slot) {
+    var inv = server.GetUserInventory({ PlayFabId: playerId });
+    for (var i = 0; i < inv.Inventory.length; i++) {
+        var it = inv.Inventory[i];
+        if (it.ItemId === itemId && it.CustomData && it.CustomData.slot === slot) return true;
+    }
+    return false;
+}
+
+function validSlot(args) {
+    var slot = String(args && args.slot !== undefined ? args.slot : "");
+    return (slot === "0" || slot === "1" || slot === "2") ? slot : null;
+}
+
 handlers.claimTutorialKey = function (args, context) {
     var playerId = currentPlayerId;
     var itemId = "tutorial_key";
+    var slot = validSlot(args);
 
-    var claimData = server.GetUserInternalData({
-        PlayFabId: playerId,
-        Keys: ["tutorial_key_claimed"]
-    });
+    if (slot === null)
+        return { success: false, alreadyClaimed: false, message: "Missing or invalid slot." };
 
-    if (claimData.Data && claimData.Data.tutorial_key_claimed &&
-        claimData.Data.tutorial_key_claimed.Value === "true") {
-        return {
-            success: true,
-            alreadyClaimed: true,
-            message: "Tutorial key was already claimed."
-        };
-    }
+    if (slotOwnsItem(playerId, itemId, slot))
+        return { success: true, alreadyClaimed: true, message: "This slot already has the tutorial key." };
 
-    var inventory = server.GetUserInventory({
-        PlayFabId: playerId
-    });
-
-    for (var i = 0; i < inventory.Inventory.length; i++) {
-        if (inventory.Inventory[i].ItemId === itemId) {
-            server.UpdateUserInternalData({
-                PlayFabId: playerId,
-                Data: {
-                    tutorial_key_claimed: "true"
-                }
-            });
-
-            return {
-                success: true,
-                alreadyClaimed: true,
-                message: "Player already owns the tutorial key."
-            };
-        }
-    }
-
-    var grantResult = server.GrantItemsToUser({
+    var grant = server.GrantItemsToUser({
         PlayFabId: playerId,
         ItemIds: [itemId],
         CatalogVersion: "TutorialCatalog"
     });
 
-    server.UpdateUserInternalData({
+    var results = grant.ItemGrantResults;
+    if (!results || results.length === 0 || !results[0].ItemInstanceId)
+        return { success: false, alreadyClaimed: false, message: "Grant did not return an item." };
+
+    server.UpdateUserInventoryItemCustomData({
         PlayFabId: playerId,
-        Data: {
-            tutorial_key_claimed: "true"
-        }
+        ItemInstanceId: results[0].ItemInstanceId,
+        Data: { slot: slot }
     });
 
-    return {
-        success: true,
-        alreadyClaimed: false,
-        message: "Tutorial key granted successfully!"
-    };
+    return { success: true, alreadyClaimed: false, message: "Tutorial key granted for slot " + slot + "." };
+};
+
+handlers.clearSlotInventory = function (args, context) {
+    var playerId = currentPlayerId;
+    var slot = validSlot(args);
+    if (slot === null) return { success: false };
+
+    var inv = server.GetUserInventory({ PlayFabId: playerId });
+    var removed = 0;
+    for (var i = 0; i < inv.Inventory.length; i++) {
+        var it = inv.Inventory[i];
+        if (it.CustomData && it.CustomData.slot === slot) {
+            server.RevokeInventoryItem({ PlayFabId: playerId, ItemInstanceId: it.ItemInstanceId });
+            removed++;
+        }
+    }
+    return { success: true, removed: removed };
 };

@@ -14,16 +14,32 @@ public class LegacyCatalogManager : MonoBehaviour
     private const string CustomPlayerId = "UnityPlayerId_Test9";
     private const string CatalogVersion = "TutorialCatalog";
     private string sessionTicket;
-    private HashSet<string> ownedItemIds = new HashSet<string>();
+
+    private List<InventoryItem> ownedItems = new List<InventoryItem>();
 
     public bool HasItem(string itemId)
     {
-        return ownedItemIds.Contains(itemId);
+        string slot = SaveManager.CurrentSlot.ToString();
+        foreach (InventoryItem item in ownedItems)
+        {
+            if (item.ItemId == itemId && item.CustomData != null && item.CustomData.slot == slot)
+                return true;
+        }
+        return false;
     }
+
     public List<string> GetOwnedItemIds()
     {
-        return new List<string>(ownedItemIds);
+        var ids = new List<string>();
+        string slot = SaveManager.CurrentSlot.ToString();
+        foreach (InventoryItem item in ownedItems)
+        {
+            if (item.CustomData != null && item.CustomData.slot == slot)
+                ids.Add(item.ItemId);
+        }
+        return ids;
     }
+
     public bool IsInventoryLoaded { get; private set; } = false;
     [Serializable]
     private class LoginRequest
@@ -87,12 +103,17 @@ public class LegacyCatalogManager : MonoBehaviour
         public string ItemId;
         public string ItemInstanceId;
         public int RemainingUses;
+        public ItemCustomData CustomData;
     }
+
+    [Serializable] private class ItemCustomData { public string slot; }
+    [Serializable] private class SlotArgs { public int slot; } 
     [Serializable]
     private class CloudScriptRequest
     {
         public string FunctionName;
         public bool GeneratePlayStreamEvent;
+        public SlotArgs FunctionParameter;
     }
 
     [Serializable]
@@ -248,7 +269,7 @@ public class LegacyCatalogManager : MonoBehaviour
                 JsonUtility.FromJson<InventoryResponse>(
                     request.downloadHandler.text
                 );
-            ownedItemIds.Clear();
+            ownedItems.Clear();
 
             InventoryItem[] items = response?.data?.Inventory;
 
@@ -262,11 +283,15 @@ public class LegacyCatalogManager : MonoBehaviour
 
             foreach (InventoryItem item in items)
             {
-                ownedItemIds.Add(item.ItemId);
+                ownedItems.Add(item);
+
+                string slotTag = (item.CustomData != null && !string.IsNullOrEmpty(item.CustomData.slot))
+                    ? item.CustomData.slot : "none";
 
                 Debug.Log(
                     $"Owned item: {item.ItemId} | " +
                     $"Instance: {item.ItemInstanceId} | " +
+                    $"Slot: {slotTag} | " +
                     $"Remaining uses: {item.RemainingUses}"
                 );
             }
@@ -402,6 +427,27 @@ public class LegacyCatalogManager : MonoBehaviour
 
     private IEnumerator DeleteSlotRequest(int slot, Action<bool> onComplete)
     {
+        string csUrl = $"https://{TitleId}.playfabapi.com/Client/ExecuteCloudScript";
+        var csBody = new CloudScriptRequest
+        {
+            FunctionName = "clearSlotInventory",
+            GeneratePlayStreamEvent = false,
+            FunctionParameter = new SlotArgs { slot = slot }
+        };
+
+        using (UnityWebRequest clear = CreatePostRequest(csUrl, JsonUtility.ToJson(csBody)))
+        {
+            clear.SetRequestHeader("X-Authorization", sessionTicket);
+            yield return clear.SendWebRequest();
+
+            if (clear.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Clear slot inventory failed: " + clear.downloadHandler.text);
+                onComplete?.Invoke(false);
+                yield break;   // stop, so we don't delete the slot but leave its items behind
+            }
+        }
+
         string url = $"https://{TitleId}.playfabapi.com/Client/UpdateUserData";
         var body = new RemoveKeysRequest { KeysToRemove = new[] { "Slot" + slot } };
 
@@ -413,6 +459,8 @@ public class LegacyCatalogManager : MonoBehaviour
             bool ok = request.result == UnityWebRequest.Result.Success;
             if (ok) SaveManager.Slots[slot] = null;
             else Debug.LogError("Delete slot failed: " + request.downloadHandler.text);
+
+            if (ok) yield return StartCoroutine(LoadInventory(sessionTicket));   // refresh the local copy
             onComplete?.Invoke(ok);
         }
     }
@@ -439,7 +487,8 @@ public class LegacyCatalogManager : MonoBehaviour
         var body = new CloudScriptRequest
         {
             FunctionName = "claimTutorialKey",
-            GeneratePlayStreamEvent = false
+            GeneratePlayStreamEvent = false,
+            FunctionParameter = new SlotArgs { slot = SaveManager.CurrentSlot }
         };
 
         using (UnityWebRequest request =
@@ -472,13 +521,20 @@ public class LegacyCatalogManager : MonoBehaviour
                 );
 
             if (response?.data?.FunctionResult != null &&
-    response.data.FunctionResult.success)
+                response.data.FunctionResult.success)
             {
-                Debug.Log("PlayFab confirmed the player owns the tutorial key!");
-
                 yield return StartCoroutine(LoadInventory(sessionTicket));
 
-                onComplete?.Invoke(true);
+                if (HasItem("tutorial_key"))
+                {
+                    Debug.Log("PlayFab confirmed the player owns the tutorial key!");
+                    onComplete?.Invoke(true);
+                }
+                else
+                {
+                    Debug.LogError("Claim reported success, but the key isn't in this slot's inventory.");
+                    onComplete?.Invoke(false);
+                }
             }
             else
             {

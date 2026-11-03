@@ -37,11 +37,17 @@ public class ObjectiveManager : MonoBehaviour
     bool started;
     bool finished;
     readonly HashSet<string> owned = new HashSet<string>();
+    public bool beginOnStart = false;
 
     void Awake()
     {
         Instance = this;
         panel.SetActive(false);
+    }
+
+    void Start()
+    {
+        if (beginOnStart) Begin();
     }
 
     // Call when the step-by-step tutorial ends
@@ -51,6 +57,18 @@ public class ObjectiveManager : MonoBehaviour
         started = true;
         completed = 0;
         panel.SetActive(true);
+
+        while (completed < objectives.Count && SaveManager.IsComplete(objectives[completed].id))
+        {
+            completed++;
+        }
+
+        if (completed >= objectives.Count)
+        {
+            finished = true;
+            if (hidePanelWhenDone) panel.SetActive(false);
+            return;
+        }
 
         SkipOwned();
         Refresh();
@@ -89,11 +107,15 @@ public class ObjectiveManager : MonoBehaviour
     void SkipOwned()
     {
         while (completed < objectives.Count && IsOwned(objectives[completed]))
+        {
+            SaveManager.MarkComplete(objectives[completed].id);
             completed++;
+        }
     }
 
     void CompleteCurrent()
     {
+        SaveManager.MarkComplete(objectives[completed].id);
         completed++;
         SkipOwned();
         Refresh();

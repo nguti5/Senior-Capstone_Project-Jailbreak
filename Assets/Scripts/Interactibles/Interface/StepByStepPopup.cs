@@ -26,10 +26,7 @@ public class StepByStepPopup : MonoBehaviour
     bool running;
     int startFrame;
 
-    string DoneKey =>
-        "TutorialDone" +
-        (string.IsNullOrEmpty(tutorialId) ? "" : "_" + tutorialId) +
-        PlayerPrefs.GetInt("CurrentSlot");
+    string DoneId => "tutorial_" + (string.IsNullOrEmpty(tutorialId) ? "intro" : tutorialId);
 
     void Start()
     {
@@ -41,9 +38,10 @@ public class StepByStepPopup : MonoBehaviour
     {
         if (running) return;
 
-        bool alreadyDone = onlyOnce && PlayerPrefs.GetInt(DoneKey, 0) == 1;
+        bool alreadyDone = onlyOnce && SaveManager.IsComplete(DoneId);
         if (alreadyDone || steps.Length == 0)
         {
+            popupPanel.SetActive(false);
             onComplete?.Invoke();   // nothing to show, but the sequence still counts as finished
             return;
         }
@@ -87,16 +85,9 @@ public class StepByStepPopup : MonoBehaviour
 
         if (onlyOnce)
         {
-            PlayerPrefs.SetInt(DoneKey, 1);
-            PlayerPrefs.Save();
+            SaveManager.MarkComplete(DoneId);
         }
 
         onComplete?.Invoke();
-    }
-
-    // handy for testing or a "replay tutorial" button
-    public void ResetProgress()
-    {
-        PlayerPrefs.DeleteKey(DoneKey);
     }
 }
