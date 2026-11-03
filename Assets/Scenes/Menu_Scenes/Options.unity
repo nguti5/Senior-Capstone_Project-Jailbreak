@@ -481,6 +481,7 @@ GameObject:
   m_Component:
   - component: {fileID: 495621319}
   - component: {fileID: 495621320}
+  - component: {fileID: 495621321}
   m_Layer: 0
   m_Name: OptionsManager
   m_TagString: Untagged
@@ -516,6 +517,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f32390ce331ee2e4799fe4b79092cadc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OptionsMenu
+--- !u!114 &495621321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 495621318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 586e90f49483ae249b19e45e8976f0cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuCursor
 --- !u!1 &690416263
 GameObject:
   m_ObjectHideFlags: 0
