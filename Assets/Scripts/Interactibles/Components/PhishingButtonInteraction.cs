@@ -31,6 +31,8 @@ public class PhishingButtonInteraction : MonoBehaviour, IInteractible
         if (isAnimating || isFlashing || redButton == null)
             return;
 
+        PlaceholderGameUI.SetAssistantThreat("phishing");
+        PlaceholderGameUI.SetNotice("Assistant: Suspicious link activated. Press C for a cybersecurity clue.");
         StartCoroutine(AnimateButton());
         StartCoroutine(FlashWarningLights());
     }
@@ -98,3 +100,4 @@ public class PhishingButtonInteraction : MonoBehaviour, IInteractible
         SetLights(false, false);
     }
 }
+

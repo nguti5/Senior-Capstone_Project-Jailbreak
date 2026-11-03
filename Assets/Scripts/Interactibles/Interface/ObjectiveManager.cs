@@ -73,6 +73,13 @@ public class ObjectiveManager : MonoBehaviour
             CompleteCurrent();
     }
 
+    public string CurrentObjectiveId => IsActive() ? objectives[completed].id : null;
+
+    void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
+    }
+
     bool IsActive() => started && !finished && completed < objectives.Count;
 
     bool IsOwned(Objective o) =>

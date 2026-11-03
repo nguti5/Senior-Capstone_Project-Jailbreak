@@ -1,0 +1,92 @@
+{
+  "offerAfterSeconds": 60,
+  "entries": [
+    {
+      "scene": "Tutorial",
+      "objectiveId": "get_key",
+      "hints": [
+        "Look for an object you can collect before trying the locked door.",
+        "Move close to the key and press E when the interaction prompt appears.",
+        "After collecting the key, approach the Files door and press E."
+      ]
+    },
+    {
+      "scene": "Tutorial",
+      "objectiveId": "go_through_door",
+      "hints": [
+        "You have the key. Return to the Files door.",
+        "Stand close enough for the interaction prompt, face the Files door, and press E."
+      ]
+    },
+    {
+      "scene": "Files-Tutorial",
+      "hints": [
+        "Inspect the available objects and read any messages or files before deciding what to do next.",
+        "Compare the evidence you found with the threat documentation under Esc > Documentation."
+      ]
+    },
+    {
+      "scene": "Level1",
+      "hints": [
+        "Inspect the available objects and read any messages or files before deciding what to do next.",
+        "Compare the evidence you found with the threat documentation under Esc > Documentation."
+      ]
+    },
+    {
+      "scene": "Email-Level1",
+      "hints": [
+        "Inspect the available objects and read any messages or files before deciding what to do next.",
+        "Compare the evidence you found with the threat documentation under Esc > Documentation."
+      ]
+    },
+    {
+      "scene": "Files-Level1",
+      "hints": [
+        "Inspect the available objects and read any messages or files before deciding what to do next.",
+        "Compare the evidence you found with the threat documentation under Esc > Documentation."
+      ]
+    },
+    {
+      "scene": "ThreatAnalyzer-Level1",
+      "hints": [
+        "Inspect the available objects and read any messages or files before deciding what to do next.",
+        "Compare the evidence you found with the threat documentation under Esc > Documentation."
+      ]
+    },
+    {
+      "threatId": "phishing",
+      "clues": [
+        "A familiar name or logo does not prove a message is trustworthy. Inspect what it asks you to do.",
+        "Urgency, requests for credentials, and an unexpected destination are warning signs. Verify the sender through a trusted channel."
+      ]
+    },
+    {
+      "threatId": "malware",
+      "clues": [
+        "An unexpected attachment or download can carry unwanted software. Consider where it came from.",
+        "Look for evidence of unauthorized changes or activity, and compare it with the file's claimed purpose."
+      ]
+    },
+    {
+      "threatId": "ransomware",
+      "clues": [
+        "Files becoming inaccessible alongside a payment demand can indicate ransomware.",
+        "A ransom message is evidence of extortion. Paying does not guarantee recovery; consider safe backups and isolating affected systems."
+      ]
+    },
+    {
+      "threatId": "ddos",
+      "clues": [
+        "A service becoming unavailable can have several causes. Look for an unusual volume of requests.",
+        "Traffic from many sources overwhelming the same service is consistent with a distributed denial-of-service attack."
+      ]
+    },
+    {
+      "threatId": "social-engineering",
+      "clues": [
+        "Be cautious when someone uses authority, trust, or urgency to bypass normal checks.",
+        "Verify unusual requests independently before sharing information or granting access."
+      ]
+    }
+  ]
+}

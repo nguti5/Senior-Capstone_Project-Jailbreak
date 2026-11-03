@@ -44,6 +44,8 @@ public sealed class PlaceholderGameUI : MonoBehaviour
     private Button selectedThreatButton;
     private ThreatCollection documentation;
 
+    private AssistantGuidance assistant;
+    private TMP_Text assistantBody;
     private bool paused;
     private bool threatOpen;
     private bool documentationOpen;
@@ -97,6 +99,8 @@ public sealed class PlaceholderGameUI : MonoBehaviour
     private void BuildForScene(Scene scene)
     {
         ResetInteractionState();
+        assistant = new AssistantGuidance();
+        assistantBody = null;
         if (canvas != null) Destroy(canvas.gameObject);
         canvas = null;
         hud = null;
@@ -131,12 +135,18 @@ public sealed class PlaceholderGameUI : MonoBehaviour
         MakeLabel("PROJECT JAILBREAK  |  PLACEHOLDER HUD", hud.transform, new Vector2(14f, -12f), new Vector2(530f, 32f), 22f);
         statusLabel = MakeLabel("STATUS: ACTIVE", hud.transform, new Vector2(14f, -52f), new Vector2(530f, 28f), 17f);
         objectiveLabel = MakeLabel("OBJECTIVE: Explore the scene (placeholder)", hud.transform, new Vector2(14f, -87f), new Vector2(530f, 28f), 17f);
-        noticeLabel = MakeLabel("WASD: Move  |  ESC: Pause  |  TAB: Threats", hud.transform, new Vector2(14f, -124f), new Vector2(530f, 52f), 16f);
+        noticeLabel = MakeLabel("WASD: Move | ESC: Pause | TAB: Assistant\nH: Next hint | C: Threat clue", hud.transform, new Vector2(14f, -124f), new Vector2(530f, 52f), 16f);
 
-        threatPanel = MakePanel("Threat Information", root.transform, Vector2.one, Vector2.one, new Vector2(-20f, -20f), new Vector2(440f, 278f));
-        MakeLabel("THREAT INFORMATION", threatPanel.transform, new Vector2(14f, -12f), new Vector2(410f, 34f), 22f);
-        MakeLabel("Threat: Not detected (placeholder)\nSeverity: Unknown\nDetails: Pending gameplay integration\nSuggested action: Investigate", threatPanel.transform, new Vector2(14f, -54f), new Vector2(410f, 150f), 18f);
-        MakeButton("Close", threatPanel.transform, new Vector2(14f, -222f), new Vector2(175f, 40f), ToggleThreats);
+        threatPanel = MakePanel("Assistant", root.transform, Vector2.one, Vector2.one, new Vector2(-20f, -20f), new Vector2(540f, 420f));
+        MakeLabel("ASSISTANT", threatPanel.transform, new Vector2(14f, -12f), new Vector2(510f, 34f), 22f);
+        assistantBody = MakeLabel("Need a hand? Request a hint for your current objective or a clue about the threat you are investigating.", threatPanel.transform, new Vector2(14f, -58f), new Vector2(510f, 240f), 20f);
+        assistantBody.richText = false;
+        assistantBody.enableAutoSizing = true;
+        assistantBody.fontSizeMin = 12f;
+        assistantBody.fontSizeMax = 20f;
+        MakeButton("Next Hint (H)", threatPanel.transform, new Vector2(14f, -310f), new Vector2(245f, 42f), () => RequestGuidance(false));
+        MakeButton("Threat Clue (C)", threatPanel.transform, new Vector2(275f, -310f), new Vector2(245f, 42f), () => RequestGuidance(true));
+        MakeButton("Close (Tab / Esc)", threatPanel.transform, new Vector2(14f, -366f), new Vector2(506f, 40f), ToggleThreats);
         threatPanel.SetActive(false);
 
         BuildDocumentationPanel(root.transform);
@@ -144,7 +154,7 @@ public sealed class PlaceholderGameUI : MonoBehaviour
         pausePanel = MakePanel("Pause Menu", root.transform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(440f, 382f));
         MakeLabel("PAUSED", pausePanel.transform, new Vector2(25f, -22f), new Vector2(390f, 45f), 30f);
         MakeButton("Resume", pausePanel.transform, new Vector2(45f, -91f), new Vector2(350f, 48f), () => SetPaused(false));
-        MakeButton("Threat Information", pausePanel.transform, new Vector2(45f, -151f), new Vector2(350f, 48f), () =>
+        MakeButton("Assistant", pausePanel.transform, new Vector2(45f, -151f), new Vector2(350f, 48f), () =>
         {
             SetPaused(false);
             ToggleThreats();
@@ -269,7 +279,11 @@ public sealed class PlaceholderGameUI : MonoBehaviour
             caption.rectTransform.offsetMin = new Vector2(12f, 0f);
             caption.rectTransform.offsetMax = new Vector2(-12f, 0f);
             caption.alignment = TextAlignmentOptions.MidlineLeft;
-            button.onClick.AddListener(() => SelectThreat(capturedEntry, button));
+            button.onClick.AddListener(() =>
+            {
+                SelectThreat(capturedEntry, button);
+                SetAssistantThreat(capturedEntry.id);
+            });
             if (!selectedFirst)
             {
                 SelectThreat(entry, button);
@@ -308,7 +322,15 @@ public sealed class PlaceholderGameUI : MonoBehaviour
 
     private void Update()
     {
-        if (canvas == null || Keyboard.current == null) return;
+        if (canvas == null) return;
+        var manager = ObjectiveManager.Instance;
+        string objectiveId = manager != null ? manager.CurrentObjectiveId : null;
+        if (!paused && !threatOpen && Time.timeScale > 0f &&
+            assistant.Tick(SceneManager.GetActiveScene().name, objectiveId, Time.deltaTime))
+            SetNotice("Assistant: Need a hint? Press H. Press C for a threat clue.");
+        if (Keyboard.current == null) return;
+        if (!paused && Keyboard.current.hKey.wasPressedThisFrame) RequestGuidance(false);
+        if (!paused && Keyboard.current.cKey.wasPressedThisFrame) RequestGuidance(true);
         if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             if (documentationOpen) CloseDocumentation();
@@ -319,6 +341,22 @@ public sealed class PlaceholderGameUI : MonoBehaviour
             ToggleThreats();
         if (statusLabel != null)
             statusLabel.text = "STATUS: ACTIVE  |  SCENE: " + SceneManager.GetActiveScene().name;
+    }
+
+    private void RequestGuidance(bool clue)
+    {
+        if (paused || assistantBody == null) return;
+        var manager = ObjectiveManager.Instance;
+        assistantBody.text = assistant.Request(SceneManager.GetActiveScene().name,
+            manager != null ? manager.CurrentObjectiveId : null, clue);
+        if (!threatOpen) ToggleThreats();
+    }
+
+    // Call when gameplay identifies a threat; use the threatId from AssistantGuidance.json.
+    public static void SetAssistantThreat(string threatId)
+    {
+        if (instance != null && instance.assistant != null)
+            instance.assistant.SetThreat(threatId);
     }
 
     private void ToggleThreats()
@@ -475,3 +513,4 @@ public sealed class PlaceholderGameUI : MonoBehaviour
             instance.noticeLabel.text = notice;
     }
 }
+
