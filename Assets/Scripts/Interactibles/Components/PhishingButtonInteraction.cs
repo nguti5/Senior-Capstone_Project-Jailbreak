@@ -1,9 +1,11 @@
 
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PhishingButtonInteraction : MonoBehaviour, IInteractible
 {
+    [Header("Button Animation")]
     [SerializeField] private Transform redButton;
     [SerializeField] private float pressDepth = 0.08f;
     [SerializeField] private float pressDuration = 0.12f;
@@ -13,6 +15,9 @@ public class PhishingButtonInteraction : MonoBehaviour, IInteractible
     [SerializeField] private Light warningLightRight;
     [SerializeField] private float flashInterval = 0.2f;
     [SerializeField] private int flashCount = 8;
+
+    [Header("Scene Transition")]
+    [SerializeField] private string battleSceneName = "Battle-Tutorial-lose";
 
     private Vector3 originalPosition;
     private bool isAnimating;
@@ -32,7 +37,10 @@ public class PhishingButtonInteraction : MonoBehaviour, IInteractible
             return;
 
         PlaceholderGameUI.SetAssistantThreat("phishing");
-        PlaceholderGameUI.SetNotice("Assistant: Suspicious link activated. Press C for a cybersecurity clue.");
+        PlaceholderGameUI.SetNotice(
+            "Assistant: Suspicious link activated. Press C for a cybersecurity clue."
+        );
+
         StartCoroutine(AnimateButton());
         StartCoroutine(FlashWarningLights());
     }
@@ -82,8 +90,17 @@ public class PhishingButtonInteraction : MonoBehaviour, IInteractible
             yield return new WaitForSeconds(flashInterval);
         }
 
+        // Turn off both warning lights
         SetLights(false, false);
-        isFlashing = false;
+
+        Debug.Log("Warning sequence complete. Loading phishing battle...");
+
+        // Restore cursor state
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        // Transition to the losing battle scene
+        SceneManager.LoadScene(battleSceneName);
     }
 
     private void SetLights(bool left, bool right)
@@ -100,4 +117,3 @@ public class PhishingButtonInteraction : MonoBehaviour, IInteractible
         SetLights(false, false);
     }
 }
-
