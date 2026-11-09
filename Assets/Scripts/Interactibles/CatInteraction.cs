@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class CatInteraction : MonoBehaviour, IInteractible
 {
-    [SerializeField] private string catName = "Peanut";
+    [SerializeField] private string catName = "Peenut";
 
     [Header("Name Tag UI")]
     [SerializeField] private GameObject catNameTagPanel;
     [SerializeField] private float displayDuration = 4f;
+
+    [Header("Objective")]
+    [Tooltip("Objective checked off when player reads the name tag.")]
+    [SerializeField] private string objectiveId = "find_password";
 
     private Coroutine hideCoroutine;
 
@@ -21,6 +25,9 @@ public class CatInteraction : MonoBehaviour, IInteractible
     public void Interact(GameObject interactor)
     {
         Debug.Log("The name tag reads: " + catName);
+
+        if (!string.IsNullOrEmpty(objectiveId) && ObjectiveManager.Instance != null)
+            ObjectiveManager.Instance.Complete(objectiveId);
 
         if (catNameTagPanel == null)
             return;

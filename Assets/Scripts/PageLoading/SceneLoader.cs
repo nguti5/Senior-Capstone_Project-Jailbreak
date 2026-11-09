@@ -1,13 +1,16 @@
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public static class SceneLoader
+public class SceneLoader : MonoBehaviour
 {
-    public static string NextScene = "TitlePage";
-    public static float WaitSeconds = 15f;
+    public static void LoadWithLoadingScreen(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
 
-    public static void LoadWithLoadingScreen(string sceneName, float wait = 10f){
-        NextScene = sceneName;
-        WaitSeconds = wait;
-        SceneManager.LoadScene("BattleLoading");
+    // call this on Unity Events
+    public void Load(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 }

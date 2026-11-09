@@ -157,4 +157,10 @@ public class ObjectiveManager : MonoBehaviour
 
         objectiveText.text = sb.ToString().TrimEnd();
     }
+
+    public void RunAllCompleteActions()
+    {
+        if (finished)
+            onAllComplete?.Invoke();
+    }
 }
