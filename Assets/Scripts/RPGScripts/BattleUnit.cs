@@ -30,10 +30,11 @@ public class BattleUnit : MonoBehaviour
 
     }
 
-    //sets up creature's stats and plays battle start animation.
+    //sets up creature's stats, image, and plays battle start animation.
     public void SetupCreature()
     {
         Creature = new Creature(_base, _level);
+        creatureImage.sprite = _base.FrontSprite;
         playStartAnimation();
     }
 

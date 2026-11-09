@@ -1107,7 +1107,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 530445592}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1732374778}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: PlayerDefend
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &530445592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1431,7 +1443,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 747505080}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1732374778}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: PlayerRun
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &747505080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3115,6 +3139,9 @@ MonoBehaviour:
   enemyUnit: {fileID: 75311230}
   enemyHud: {fileID: 0}
   battleDialogueBox: {fileID: 63495816}
+  defendRestoreCount: 2
+  defendRestoreAmount: 2
+  fleeChance: 0.5
 --- !u!1 &1788812980
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,4 @@
-
+using UnityEngine.Events;
 using System.Collections;
 using UnityEngine;
 
@@ -13,6 +13,7 @@ public class PhishingButtonInteraction : MonoBehaviour, IInteractible
     [SerializeField] private Light warningLightRight;
     [SerializeField] private float flashInterval = 0.2f;
     [SerializeField] private int flashCount = 8;
+    [SerializeField] private UnityEvent onPressed; 
 
     private Vector3 originalPosition;
     private bool isAnimating;
@@ -68,21 +69,23 @@ public class PhishingButtonInteraction : MonoBehaviour, IInteractible
     }
 
     private IEnumerator FlashWarningLights()
+{
+    isFlashing = true;
+
+    for (int i = 0; i < flashCount; i++)
     {
-        isFlashing = true;
+        SetLights(true, false);
+        yield return new WaitForSeconds(flashInterval);
 
-        for (int i = 0; i < flashCount; i++)
-        {
-            SetLights(true, false);
-            yield return new WaitForSeconds(flashInterval);
-
-            SetLights(false, true);
-            yield return new WaitForSeconds(flashInterval);
-        }
-
-        SetLights(false, false);
-        isFlashing = false;
+        SetLights(false, true);
+        yield return new WaitForSeconds(flashInterval);
     }
+
+    SetLights(false, false);
+    isFlashing = false;
+
+    onPressed?.Invoke();   
+}
 
     private void SetLights(bool left, bool right)
     {
@@ -96,5 +99,11 @@ public class PhishingButtonInteraction : MonoBehaviour, IInteractible
     private void OnDisable()
     {
         SetLights(false, false);
+
+        // Coroutines die when this object is switched off, so reset anything they'd have reset
+        isAnimating = false;
+        isFlashing = false;
+        if (redButton != null)
+            redButton.localPosition = originalPosition;
     }
 }

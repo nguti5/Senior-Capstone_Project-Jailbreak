@@ -51,6 +51,8 @@ public class Creature
     public int SpDefense => Mathf.FloorToInt((_base.SpDefense * _level)/100.0f)+1;
     public int Speed => Mathf.FloorToInt((_base.Speed * _level)/100.0f)+1;
 
+    public bool IsDefending{set; get;}
+
     public DamageDescription RecieveDamage(Creature attacker, Attack attack)
     {
         float critical = 1f;
@@ -59,15 +61,20 @@ public class Creature
             critical = 2f; 
         }
 
+        float defend = IsDefending ? 0.5f : 1.0f;
+
         float type = TypeMatrix.GetMultEffectiveness(attack.Base.Type, this.Base.Type);
         var damageDesc = new DamageDescription()
         {
             Critical = critical, 
             Type = type,
+            Defended = IsDefending,
             Dead = false
         };
 
-        float modifiers = Random.Range(0.84f, 1.0f) * type * critical;
+        
+
+        float modifiers = Random.Range(0.84f, 1.0f) * type * critical * defend;
         float baseDamage = ((2* attacker.Level/5f+2)*attack.Base.Power*(attacker.Attack/(float)Defense)/50f+2);
         int totalDamage = Mathf.FloorToInt(baseDamage * modifiers);
 
@@ -87,6 +94,30 @@ public class Creature
         return Attacks[randID];
     }
 
+    public List<Attack> RestoreRandomAttackMP(int howMany, int amount)
+    {
+        var candidates = new List<Attack>();
+        foreach (var a in Attacks)
+        {
+            if (a.Mp < a.Base.MP)
+            {
+                candidates.Add(a);
+            }
+        }
+
+        var restored = new List<Attack>();
+        for (int i = 0; i < howMany && candidates.Count > 0; i++)
+        {
+            int index = Random.Range(0, candidates.Count);
+            Attack chosen = candidates[index];
+            candidates.RemoveAt(index);
+
+            chosen.Mp = Mathf.Min(chosen.Mp + amount, chosen.Base.MP);
+            restored.Add(chosen);
+        }
+        return restored;
+    }
+
 }
 
 public class DamageDescription
@@ -94,4 +125,8 @@ public class DamageDescription
     public float Critical {get;set;}
     public float Type{get;set;}
     public bool Dead{get;set;}
+
+    public bool Defended{get;set;}
 }
+
+
