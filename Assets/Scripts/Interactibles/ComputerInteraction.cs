@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class ComputerInteraction : MonoBehaviour, IInteractible
 {
@@ -119,21 +120,34 @@ public class ComputerInteraction : MonoBehaviour, IInteractible
         else
             StartCoroutine(Failure());
     }
+    
+private IEnumerator Success()
+{
+    busy = true;
+    unlocked = true;
 
-    private IEnumerator Success()
+    SetFeedback("Access granted!");
+
+    // Complete the tutorial objective
+    if (ObjectiveManager.Instance != null &&
+        !string.IsNullOrEmpty(objectiveId))
     {
-        busy = true;
-        unlocked = true;
-        SetFeedback("Access granted!");
-
-        if (ObjectiveManager.Instance != null && !string.IsNullOrEmpty(objectiveId))
-            ObjectiveManager.Instance.Complete(objectiveId);
-
-        yield return new WaitForSecondsRealtime(1f);
-
-        Close();
-        busy = false;
+        ObjectiveManager.Instance.Complete(objectiveId);
     }
+
+    Debug.Log("Correct password! Tutorial completed.");
+
+    // Allow the player to see the success message
+    yield return new WaitForSecondsRealtime(1.5f);
+
+    // Restore player controls and cursor state
+    Close();
+
+    // Load Level 1
+    Debug.Log("Loading Battle Tutorial...");
+    SceneManager.LoadScene("Battle-Tutorial");
+}
+
 
     private IEnumerator Failure()
     {
