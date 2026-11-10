@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Menu_Scenes/TitlePage.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Menu_Scenes/Options.unity
     guid: 03a3280787e2f4247a57cf812916cd60
   - enabled: 1
@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tutorial_Scenes/Battle-Tutorial-Lose.unity
     guid: 56f501472bf68b14f8cdbf9759875c7d
+  - enabled: 0
+    path: Assets/Scenes/DevLevel2.unity
+    guid: 54a463d0b8e288640ad71b1c918df4ad
   - enabled: 1
     path: Assets/Scenes/Level1_Scenes/Level1.unity
     guid: 43c1fa7655993d64fbdb3be1c019a1e5
@@ -47,6 +50,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level1_Scenes/BossBattle-Level1.unity
     guid: a851c35e99f632f49aea5ae15714bada
+  - enabled: 1
+    path: Assets/Scenes/Battle_Scenes/BattleScene1.unity
+    guid: 130ea13c430a91d40a42c6542082b643
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

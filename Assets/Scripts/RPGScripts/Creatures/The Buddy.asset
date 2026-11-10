@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b64475936dcc80647b029b8198a810a6, type: 3}
+  m_Name: The Buddy
+  m_EditorClassIdentifier: Assembly-CSharp::CreatureBase
+  ID: 1
+  creatureName: The Buddy
+  description: A virus pretending to be a helpful utility
+  frontSprite: {fileID: 21300000, guid: d62cc67b41b8d0d41a7dffdc3d39cb84, type: 3}
+  hurtSprite: {fileID: 0}
+  type: 0
+  maxHP: 100
+  attack: 50
+  defense: 50
+  spAttack: 50
+  spDefense: 50
+  speed: 50
+  knownAttacks:
+  - attack: {fileID: 11400000, guid: 3f07db5f57b05b3479d82fa7bdd17b28, type: 2}
+    level: 1
+  - attack: {fileID: 11400000, guid: 346369ee73a8585468ccac6c94edd1c0, type: 2}
+    level: 2

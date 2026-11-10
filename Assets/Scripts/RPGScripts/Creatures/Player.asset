@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b64475936dcc80647b029b8198a810a6, type: 3}
+  m_Name: Player
+  m_EditorClassIdentifier: Assembly-CSharp::CreatureBase
+  ID: 0
+  creatureName: Player
+  description: An anti-virus Program sent to save this computer.
+  frontSprite: {fileID: 21300000, guid: ac0ed956efec7de438025fe9c443ad49, type: 3}
+  hurtSprite: {fileID: 5071489067680748367, guid: 969acae2670e88945902b05a2f6fbe9d, type: 3}
+  type: 0
+  maxHP: 100
+  attack: 50
+  defense: 50
+  spAttack: 50
+  spDefense: 100
+  speed: 50
+  knownAttacks:
+  - attack: {fileID: 11400000, guid: 3f07db5f57b05b3479d82fa7bdd17b28, type: 2}
+    level: 1
+  - attack: {fileID: 11400000, guid: 1c2980728fac01f40ba5bdc48281f065, type: 2}
+    level: 1
+  - attack: {fileID: 11400000, guid: 751f9b94246010e40b3b0da1194d4814, type: 2}
+    level: 1
+  - attack: {fileID: 11400000, guid: e37d94a25d098ff4f8ca3481669eafb6, type: 2}
+    level: 1
