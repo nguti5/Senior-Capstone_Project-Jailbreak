@@ -145,7 +145,7 @@ private IEnumerator Success()
 
     // Load Level 1
     Debug.Log("Loading Battle Tutorial...");
-    SceneManager.LoadScene("Battle-Tutorial");
+    SceneManager.LoadScene("BattleScene1");
 }
 
 

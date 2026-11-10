@@ -18,7 +18,7 @@ public class PhishingButtonInteraction : MonoBehaviour, IInteractible
     [SerializeField] private UnityEvent onPressed; 
 
     [Header("Scene Transition")]
-    [SerializeField] private string battleSceneName = "Battle-Tutorial-lose";
+    [SerializeField] private string battleSceneName = "BattleScene1";
 
     private Vector3 originalPosition;
     private bool isAnimating;
@@ -78,44 +78,37 @@ public class PhishingButtonInteraction : MonoBehaviour, IInteractible
         redButton.localPosition = end;
     }
 
-    private IEnumerator FlashWarningLights()
+   
+private IEnumerator FlashWarningLights()
 {
     isFlashing = true;
 
+    // Flash the warning lights alternately
     for (int i = 0; i < flashCount; i++)
     {
         SetLights(true, false);
         yield return new WaitForSeconds(flashInterval);
 
-        for (int i = 0; i < flashCount; i++)
-        {
-            SetLights(true, false);
-            yield return new WaitForSeconds(flashInterval);
-
-            SetLights(false, true);
-            yield return new WaitForSeconds(flashInterval);
-        }
-
-        // Turn off both warning lights
-        SetLights(false, false);
-
-        Debug.Log("Warning sequence complete. Loading phishing battle...");
-
-        // Restore cursor state
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-
-        // Transition to the losing battle scene
-        SceneManager.LoadScene(battleSceneName);
         SetLights(false, true);
         yield return new WaitForSeconds(flashInterval);
     }
 
+    // Turn off both warning lights
     SetLights(false, false);
-    isFlashing = false;
 
-    onPressed?.Invoke();   
+    Debug.Log("Warning sequence complete. Loading phishing battle...");
+
+    // Trigger the event added by your teammate
+    onPressed?.Invoke();
+
+    // Restore cursor state
+    Cursor.lockState = CursorLockMode.Locked;
+    Cursor.visible = false;
+
+    // Load the losing battle scene
+    SceneManager.LoadScene(battleSceneName);
 }
+
 
     private void SetLights(bool left, bool right)
     {
