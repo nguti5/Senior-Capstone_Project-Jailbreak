@@ -1,0 +1,13 @@
+=== Asset License Agreement ===
+
+By purchasing or downloading this asset pack, you are granted a non-exclusive, perpetual, worldwide license to use these textures under the following terms:
+
+ALLOWED:
+- Use in both personal and commercial projects (video games, animations, renders, 3D scenes).
+- Modification of the textures to fit the specific technical needs of your project.
+
+NOT ALLOWED:
+- Redistribution, sub-licensing, or reselling of this asset pack (or individual textures) in its original or modified form on any marketplace, stock site, or file-sharing platform.
+- Including the textures in a competing product, template, or texture generator.
+
+All copyright and intellectual property rights remain with the original creator.
