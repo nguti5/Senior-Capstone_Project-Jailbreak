@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using TMPro;
 
 [Serializable]
@@ -28,6 +30,11 @@ public class ObjectiveManager : MonoBehaviour
     [Tooltip("Show future objectives greyed out. Off = they stay hidden until reached.")]
     public bool showUpcoming = false;
 
+    [Header("Minimize")]
+    [SerializeField] private RectTransform panelRect;
+    [SerializeField] private Key toggleKey = Key.O;
+    [SerializeField] private float padding = 24f;
+
     [Header("When everything is done")]
     public float finishDelay = 1.5f;
     public bool hidePanelWhenDone = true;
@@ -38,6 +45,8 @@ public class ObjectiveManager : MonoBehaviour
     bool finished;
     readonly HashSet<string> owned = new HashSet<string>();
     public bool beginOnStart = false;
+    private bool minimized;
+    private static bool minimizedPreference;
 
     void Awake()
     {
@@ -55,6 +64,7 @@ public class ObjectiveManager : MonoBehaviour
     {
         if (started) return;
         started = true;
+        minimized = minimizedPreference;
         completed = 0;
         panel.SetActive(true);
 
@@ -73,6 +83,29 @@ public class ObjectiveManager : MonoBehaviour
         SkipOwned();
         Refresh();
         CheckFinished();
+    }
+
+    public void Update()
+    {
+        if (!started || finished || Keyboard.current == null) return;
+        if (Time.timeScale == 0f) return;
+
+        if (EventSystem.current != null)
+        {
+            GameObject selected = EventSystem.current.currentSelectedGameObject;
+            if (selected != null && selected.TryGetComponent(out TMP_InputField field) && field.isFocused)
+                return;
+        }
+
+        if (Keyboard.current[toggleKey].wasPressedThisFrame)
+            SetMinimized(!minimized);
+    }
+
+    public void SetMinimized(bool value)
+    {
+        minimized = value;
+        minimizedPreference = value;
+        Refresh();
     }
 
     // Call from your inventory code when an item is confirmed added
@@ -141,21 +174,44 @@ public class ObjectiveManager : MonoBehaviour
     void Refresh()
     {
         var sb = new StringBuilder();
+        // color = #90d1eb
+        sb.AppendLine("<size=75%><color=#90d1eb>OBJECTIVES  [" + toggleKey + "]</color></size>");
 
-        for (int i = 0; i < objectives.Count; i++)
+        if (minimized)
         {
-            string text = objectives[i].description;
+            // just the current item
+            string current = completed < objectives.Count
+                ? objectives[completed].description
+                : "All done!";
+            sb.AppendLine("<b>" + current + "</b>");
+        }
+        else
+        {
+            for (int i = 0; i < objectives.Count; i++)
+            {
+                string text = objectives[i].description;
 
-            if (i < completed)
-                sb.AppendLine("<color=#7FBF7F>[x]<s> " + text + "</s></color><br><size=10><br></size>");   // done
-            else if (i == completed)
-                sb.AppendLine("<b>[ ] " + text + "</b><br><size=10><br></size>");                          // current
-            else if (showUpcoming)
-                // add opacity change color to: 75% visible - #888888BF, 50% visible - #88888880, 30% visible - #8888884D
-                sb.AppendLine("<color=#888888>[ ] " + text + "</color><br><size=10><br></size>");        // upcoming
+                if (i < completed)
+                    // color = #7FBF7F
+                    sb.AppendLine("<color=#7FBF7F><s>[x] " + text + "</s></color>");
+                else if (i == completed)
+                    sb.AppendLine("<b>[ ] " + text + "</b>");
+                else if (showUpcoming)
+                    // color = #d4d4d4
+                    sb.AppendLine("<color=#d4d4d4>[ ] " + text + "</color>");
+            }
         }
 
         objectiveText.text = sb.ToString().TrimEnd();
+        FitPanel();
+    }
+
+    void FitPanel()
+    {
+        if (panelRect == null) return;
+
+        objectiveText.ForceMeshUpdate();
+        panelRect.sizeDelta = new Vector2(panelRect.sizeDelta.x, objectiveText.preferredHeight + padding);
     }
 
     public void RunAllCompleteActions()

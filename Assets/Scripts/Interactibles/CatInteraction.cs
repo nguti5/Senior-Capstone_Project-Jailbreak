@@ -8,7 +8,7 @@ public class CatInteraction : MonoBehaviour, IInteractible
 
     [Header("Name Tag UI")]
     [SerializeField] private GameObject catNameTagPanel;
-    [SerializeField] private float displayDuration = 0.5f;
+    [SerializeField] private float displayDuration = 0.2f;
 
     [Header("Objective")]
     [Tooltip("Objective checked off when player reads the name tag.")]

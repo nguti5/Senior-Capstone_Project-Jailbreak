@@ -142,10 +142,6 @@ private IEnumerator Success()
 
     // Restore player controls and cursor state
     Close();
-
-    // Load Level 1
-    Debug.Log("Loading Battle Tutorial...");
-    SceneManager.LoadScene("BattleScene1");
 }
 
 

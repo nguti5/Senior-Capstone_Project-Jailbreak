@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 05fa00635524dee478e3110fb6a5e184
+guid: 445a83d1b8898214ea72e70a3ed3295b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2441108548998853963
-    second: dots_0
+      213: 8905124213578508802
+    second: trash_can_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -102,23 +102,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: dots_0
+      name: trash_can_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 70
-        height: 52
+        x: 748
+        y: 971
+        width: 334
+        height: 410
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5ba01ce45b07f1ed0800000000000000
-      internalID: -2441108548998853963
+      spriteID: 20aa3177a4b559b70800000000000000
+      internalID: 8905124213578508802
       vertices: []
       indices: 
       edges: []
@@ -127,7 +127,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c37ae816774a64740ad3da9b6d71344f
     internalID: 0
     vertices: []
     indices: 
@@ -137,7 +137,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      dots_0: -2441108548998853963
+      trash_can_0: 8905124213578508802
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
