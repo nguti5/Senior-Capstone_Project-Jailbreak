@@ -16,6 +16,7 @@ public static class SaveManager
     public const int SlotCount = 3;
     public static readonly SlotData[] Slots = new SlotData[SlotCount];
     public static bool Loaded;
+    public static event Action CheckpointSaved;
 
     public static int CurrentSlot
     {
@@ -35,7 +36,7 @@ public static class SaveManager
         return s != null && s.completed != null && s.completed.Contains(id);
     }
 
-    public static void MarkComplete(string id)
+    public static void MarkComplete(string id, bool announce = true)
     {
         SlotData s = Current;
         if (s == null || string.IsNullOrEmpty(id)) return;
@@ -44,24 +45,17 @@ public static class SaveManager
 
         s.completed.Add(id);
         Debug.Log("Checkpoint reached: " + id);
-        SaveCurrent();
-
-        if (LegacyCatalogManager.Instance != null)
-            LegacyCatalogManager.Instance.SaveSlot(CurrentSlot, ok =>
-            {
-                if (!ok) Debug.LogWarning("Couldn't save checkpoint: " + id);
-            });
+        SaveCurrent(announce);
     }
 
     public static void SetResumeScene(string sceneName)
     {
-        Debug.Log($"SetResumeScene called: scene={sceneName}, slot={CurrentSlot}, slotData exists={Current != null}");
-        SlotData s = Current;
+       SlotData s = Current;
         if (s == null || s.resumeScene == sceneName) return;
 
         s.resumeScene = sceneName;
         Debug.Log("Resume scene set to: " + sceneName);
-        SaveCurrent();
+        SaveCurrent(false);
     }
     
     public static string ResumeScene()
@@ -70,13 +64,19 @@ public static class SaveManager
         return (s != null && !string.IsNullOrEmpty(s.resumeScene)) ? s.resumeScene : "Tutorial";
     }
 
-    static void SaveCurrent()
+    static void SaveCurrent(bool announce)
     {
         if (LegacyCatalogManager.Instance == null) return;
 
         LegacyCatalogManager.Instance.SaveSlot(CurrentSlot, ok =>
         {
-            if (!ok) Debug.LogWarning("Couldn't save progress.");
+            if (!ok)
+            {
+                Debug.LogWarning("Couldn't save progress.");
+                return;
+            }
+
+            if (announce) CheckpointSaved?.Invoke();
         });
     }
 }
