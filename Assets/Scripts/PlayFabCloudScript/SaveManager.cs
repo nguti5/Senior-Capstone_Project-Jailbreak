@@ -16,7 +16,6 @@ public static class SaveManager
     public const int SlotCount = 3;
     public static readonly SlotData[] Slots = new SlotData[SlotCount];
     public static bool Loaded;
-    public static event Action CheckpointSaved;
 
     public static int CurrentSlot
     {
@@ -36,7 +35,7 @@ public static class SaveManager
         return s != null && s.completed != null && s.completed.Contains(id);
     }
 
-    public static void MarkComplete(string id, bool announce = true)
+    public static void MarkComplete(string id)
     {
         SlotData s = Current;
         if (s == null || string.IsNullOrEmpty(id)) return;
@@ -45,7 +44,7 @@ public static class SaveManager
 
         s.completed.Add(id);
         Debug.Log("Checkpoint reached: " + id);
-        SaveCurrent(announce);
+        SaveCurrent();
     }
 
     public static void SetResumeScene(string sceneName)
@@ -55,7 +54,7 @@ public static class SaveManager
 
         s.resumeScene = sceneName;
         Debug.Log("Resume scene set to: " + sceneName);
-        SaveCurrent(false);
+        SaveCurrent();
     }
     
     public static string ResumeScene()
@@ -64,19 +63,14 @@ public static class SaveManager
         return (s != null && !string.IsNullOrEmpty(s.resumeScene)) ? s.resumeScene : "Tutorial";
     }
 
-    static void SaveCurrent(bool announce)
+    static void SaveCurrent()
     {
         if (LegacyCatalogManager.Instance == null) return;
 
         LegacyCatalogManager.Instance.SaveSlot(CurrentSlot, ok =>
         {
             if (!ok)
-            {
                 Debug.LogWarning("Couldn't save progress.");
-                return;
-            }
-
-            if (announce) CheckpointSaved?.Invoke();
         });
     }
 }
