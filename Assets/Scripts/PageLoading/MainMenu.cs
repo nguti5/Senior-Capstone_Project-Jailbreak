@@ -7,8 +7,9 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("LoadGame");
     }
 
-    public void Options(){
-        SceneManager.LoadScene("Options");
+    public void Options()
+    {
+        GameAudio.OpenOptions();
     }
 
     public void Quit(){
