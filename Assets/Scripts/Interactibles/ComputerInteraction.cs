@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(InteractableGlow))]
 public class ComputerInteraction : MonoBehaviour, IInteractible
 {
     [Header("Computer UI")]
@@ -129,24 +130,15 @@ public class ComputerInteraction : MonoBehaviour, IInteractible
         busy = true;
         unlocked = true;
 
-        SetFeedback("Access granted!");
+        SetFeedback("Access granted!", successColor);
         PlaceholderGameUI.SetNotice(
             "The pet name was easy to guess from a nearby clue. Use a long, unique password for each account.");
 
-        // Complete the tutorial objective
-        if (ObjectiveManager.Instance != null &&
-            !string.IsNullOrEmpty(objectiveId))
-
-        SetFeedback("Access granted!", successColor);
-
-        // Complete the tutorial objective
-        if (ObjectiveManager.Instance != null &&
-            !string.IsNullOrEmpty(objectiveId))
-        {
+        // Complete the objective
+        if (ObjectiveManager.Instance != null && !string.IsNullOrEmpty(objectiveId))
             ObjectiveManager.Instance.Complete(objectiveId);
-        }
 
-        Debug.Log("Correct password! Tutorial completed.");
+        Debug.Log("Correct password! Objective completed.");
 
         // Allow the player to see the success message
         yield return new WaitForSecondsRealtime(1.5f);
@@ -155,7 +147,6 @@ public class ComputerInteraction : MonoBehaviour, IInteractible
         Close();
         busy = false;
     }
-
 
     private IEnumerator Failure()
     {

@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(InteractableGlow))]
 public class CatInteraction : MonoBehaviour, IInteractible
 {
     [SerializeField] private string catName = "Peenut";

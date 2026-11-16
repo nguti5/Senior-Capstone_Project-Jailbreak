@@ -113,15 +113,36 @@ public class ObjectiveManager : MonoBehaviour
     {
         owned.Add(itemId);
 
+        // save the checkpoint now, even if the checklist hasn't started yet
+        foreach (Objective o in objectives)
+            if (o.completeOnItemId == itemId) SaveManager.MarkComplete(o.id);
+
         if (IsActive() && objectives[completed].completeOnItemId == itemId)
             CompleteCurrent();
     }
 
     // Callable from UnityEvents, e.g. SceneDoor's On Before Load
-    public void Complete(string objectiveId)
+   public void Complete(string objectiveId)
     {
-        if (IsActive() && objectives[completed].id == objectiveId)
-            CompleteCurrent();
+        // list hasn't started or is already finished: still record the checkpoint
+        if (!started || finished)
+        {
+            SaveManager.MarkComplete(objectiveId);
+            return;
+        }
+
+        int index = objectives.FindIndex(o => o.id == objectiveId);
+        if (index < completed) return;   // unknown id, or already done
+
+        while (completed <= index)
+        {
+            SaveManager.MarkComplete(objectives[completed].id);
+            completed++;
+        }
+
+        SkipOwned();
+        Refresh();
+        CheckFinished();
     }
 
     public string CurrentObjectiveId => IsActive() ? objectives[completed].id : null;

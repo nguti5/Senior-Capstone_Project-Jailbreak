@@ -15,15 +15,20 @@ public class SceneDoor : MonoBehaviour, IInteractible
  
     [Header("State")]
     [SerializeField] private bool isLocked;
+
+    [Tooltip("If this checkpoint is complete in the current save slot, the door unlocks itself (for example get_key).")]
+    [SerializeField] private string unlockedByCheckpoint;
  
     [Header("Events (hook up sounds, fades, UI messages, etc.)")]
     [SerializeField] private UnityEvent onBeforeLoad;
     [SerializeField] private UnityEvent onLockedAttempt;
 
-    [SerializeField] private string unlockedByCheckpoint;
+    [SerializeField] private string requiredItemId;   // e.g. tutorial_key
  
     public void Interact(GameObject interactor)
     {
+        if (isLocked && HasRequiredItem()) isLocked = false;
+
         Debug.Log($"Door '{name}': locked={isLocked}, slot={SaveManager.CurrentSlot}, " +
           $"checkpoint '{unlockedByCheckpoint}' complete={SaveManager.IsComplete(unlockedByCheckpoint)}");
 
@@ -49,4 +54,9 @@ public class SceneDoor : MonoBehaviour, IInteractible
  
     // Callable from other scripts or UnityEvents (e.g. a key pickup)
     public void SetLocked(bool locked) => isLocked = locked;
+
+    private bool HasRequiredItem() =>
+    !string.IsNullOrEmpty(requiredItemId)
+    && LegacyCatalogManager.Instance != null
+    && LegacyCatalogManager.Instance.HasItem(requiredItemId);
 }

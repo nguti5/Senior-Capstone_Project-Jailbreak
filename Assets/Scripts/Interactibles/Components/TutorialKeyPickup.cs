@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(InteractableGlow))]
 public class TutorialKeyPickup : MonoBehaviour, IInteractible
 {
     private const string KeyItemId = "tutorial_key";
