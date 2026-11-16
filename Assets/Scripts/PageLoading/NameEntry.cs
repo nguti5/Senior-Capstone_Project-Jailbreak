@@ -46,6 +46,7 @@ public class NameEntry : MonoBehaviour
         if (LegacyCatalogManager.Instance == null)
         {
             Debug.LogWarning("LegacyCatalogManager not found. Start from the TitlePage scene.");
+            ShowMessage("Can't reach the save system. Start from the title page.", errorColor);
             return;
         }
 
@@ -55,7 +56,7 @@ public class NameEntry : MonoBehaviour
 
         saving = true;
         nameInput.interactable = false;
-        ShowMessage("Saving...", Color.white);
+        ShowMessage("Saving...", Color.gray);
 
         LegacyCatalogManager.Instance.SaveSlot(slot, ok =>
         {

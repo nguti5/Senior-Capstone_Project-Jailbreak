@@ -11,6 +11,8 @@ public class ComputerInteraction : MonoBehaviour, IInteractible
     [SerializeField] private GameObject computerLoginPanel;
     [SerializeField] private TMP_InputField passwordInput;
     [SerializeField] private TMP_Text feedbackText;
+    [SerializeField] private Color successColor = new Color(0.2f, 0.8f, 0.3f);
+    [SerializeField] private Color errorColor = new Color(0.9f, 0.2f, 0.2f);
 
     [Header("Password")]
     [SerializeField] private string correctPassword = "Peenut";
@@ -30,6 +32,7 @@ public class ComputerInteraction : MonoBehaviour, IInteractible
 
     private void Start()
     {
+        computerLoginPanel.SetActive(false);
         unlocked = !string.IsNullOrEmpty(objectiveId) && SaveManager.IsComplete(objectiveId);
 
         if (passwordInput != null)
@@ -62,7 +65,7 @@ public class ComputerInteraction : MonoBehaviour, IInteractible
         previousVisible = Cursor.visible;
 
         computerLoginPanel.SetActive(true);
-        SetFeedback("");
+        SetFeedback("", Color.white);
 
         if (passwordInput != null)
         {
@@ -121,34 +124,35 @@ public class ComputerInteraction : MonoBehaviour, IInteractible
             StartCoroutine(Failure());
     }
     
-private IEnumerator Success()
-{
-    busy = true;
-    unlocked = true;
-
-    SetFeedback("Access granted!");
-
-    // Complete the tutorial objective
-    if (ObjectiveManager.Instance != null &&
-        !string.IsNullOrEmpty(objectiveId))
+    private IEnumerator Success()
     {
-        ObjectiveManager.Instance.Complete(objectiveId);
+        busy = true;
+        unlocked = true;
+
+        SetFeedback("Access granted!", successColor);
+
+        // Complete the tutorial objective
+        if (ObjectiveManager.Instance != null &&
+            !string.IsNullOrEmpty(objectiveId))
+        {
+            ObjectiveManager.Instance.Complete(objectiveId);
+        }
+
+        Debug.Log("Correct password! Tutorial completed.");
+
+        // Allow the player to see the success message
+        yield return new WaitForSecondsRealtime(1.5f);
+
+        // Restore player controls and cursor state
+        Close();
+        busy = false;
     }
-
-    Debug.Log("Correct password! Tutorial completed.");
-
-    // Allow the player to see the success message
-    yield return new WaitForSecondsRealtime(1.5f);
-
-    // Restore player controls and cursor state
-    Close();
-}
 
 
     private IEnumerator Failure()
     {
         busy = true;
-        SetFeedback("Incorrect password. Maybe there's a clue nearby...");
+        SetFeedback("Incorrect password.\nMaybe there's a clue nearby...", errorColor);
 
         yield return new WaitForSecondsRealtime(closeDelay);
 
@@ -156,7 +160,7 @@ private IEnumerator Success()
         busy = false;
     }
 
-    private void SetFeedback(string message)
+    private void SetFeedback(string message, Color color)
     {
         if (feedbackText == null)
         {
@@ -165,6 +169,7 @@ private IEnumerator Success()
         }
 
         feedbackText.gameObject.SetActive(!string.IsNullOrEmpty(message));
+        feedbackText.color = color;
         feedbackText.text = message;
 
         Debug.Log($"Feedback set on '{feedbackText.name}' (parent: '{feedbackText.transform.parent?.name}') " +

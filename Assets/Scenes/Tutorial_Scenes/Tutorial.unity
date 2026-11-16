@@ -372,7 +372,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a45371a6ce3474641b82858e97963313, type: 2}
+  - {fileID: 2100000, guid: eb6e4d040e76b41459b018fd80cce84b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -801,6 +801,7 @@ MonoBehaviour:
   - "The File app holds intel on your target. Read it. Use it. Don\u2019t delete Grandma\u2019s recipes."
   - <b>E</b> = open doors and interact. Some are locked and need a key, so keep an eye out for shiny things.
   - <b>I</b> = inventory. Save things that look useful.
+  - <b>O</b> = expand objective menu. Hide menu to be on the lookout.
   tutorialId: 
   playOnStart: 1
   onlyOnce: 1
@@ -840,7 +841,7 @@ MonoBehaviour:
   - id: go_through_door
     description: Go through the door.
     completeOnItemId: 
-  showUpcoming: 0
+  showUpcoming: 1
   panelRect: {fileID: 1365348735}
   toggleKey: 29
   padding: 24
@@ -2984,7 +2985,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a45371a6ce3474641b82858e97963313, type: 2}
+  - {fileID: 2100000, guid: c7715f8ac0effa44b818cec676c725d4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
