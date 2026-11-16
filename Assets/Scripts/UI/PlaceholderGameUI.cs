@@ -183,7 +183,7 @@ public sealed class PlaceholderGameUI : MonoBehaviour
 
         BuildDocumentationPanel(root.transform);
 
-        pausePanel = MakePanel("Pause Menu", root.transform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(440f, 382f));
+        pausePanel = MakePanel("Pause Menu", root.transform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(440f, 442f));
         MakeLabel("PAUSED", pausePanel.transform, new Vector2(25f, -22f), new Vector2(390f, 45f), 30f);
         MakeButton("Resume", pausePanel.transform, new Vector2(45f, -91f), new Vector2(350f, 48f), () => SetPaused(false));
         MakeButton("Assistant", pausePanel.transform, new Vector2(45f, -151f), new Vector2(350f, 48f), () =>
@@ -192,7 +192,9 @@ public sealed class PlaceholderGameUI : MonoBehaviour
             if (!threatOpen) ToggleThreats();
         });
         MakeButton("Documentation", pausePanel.transform, new Vector2(45f, -211f), new Vector2(350f, 48f), OpenDocumentation);
-        MakeButton("Main Menu", pausePanel.transform, new Vector2(45f, -271f), new Vector2(350f, 48f), () =>
+        MakeButton("Audio Options", pausePanel.transform,
+            new Vector2(45f, -271f), new Vector2(350f, 48f), GameAudio.OpenOptions);
+        MakeButton("Main Menu", pausePanel.transform, new Vector2(45f, -331f), new Vector2(350f, 48f), () =>
         {
             SetPaused(false);
             SceneManager.LoadScene("TitlePage");
