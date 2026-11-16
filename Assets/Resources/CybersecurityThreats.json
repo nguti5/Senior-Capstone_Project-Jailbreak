@@ -1,9 +1,44 @@
 {
   "threats": [
-    {"id":"phishing","name":"Phishing","definition":"A social engineering attack that uses deceptive messages or websites to trick people into sharing sensitive information.","howItWorks":"An attacker impersonates a trusted sender and directs a target to a fraudulent login page, malicious attachment, or other deceptive request."},
-    {"id":"malware","name":"Malware","definition":"Software intentionally designed to disrupt systems, steal information, or gain unauthorized access.","howItWorks":"Malware can reach a device through malicious downloads, compromised software, or infected attachments and then execute unwanted actions."},
-    {"id":"ransomware","name":"Ransomware","definition":"A type of malware that encrypts data or otherwise blocks access and demands payment.","howItWorks":"After compromising a system, ransomware may encrypt files and display a ransom demand. Some groups also steal data to pressure victims."},
-    {"id":"ddos","name":"DDoS Attack","definition":"A distributed denial-of-service attack attempts to make a service unavailable by overwhelming it with traffic or requests.","howItWorks":"Many devices or sources send traffic toward the same service, exhausting network capacity or server resources."},
-    {"id":"social-engineering","name":"Social Engineering","definition":"The manipulation of people into taking actions or revealing information that compromises security.","howItWorks":"Attackers exploit trust, urgency, authority, or curiosity to persuade targets to bypass normal security precautions."}
+    {
+      "id": "phishing",
+      "name": "Phishing",
+      "definition": "A social engineering attack that uses deceptive messages or websites to trick people into sharing sensitive information.",
+      "howItWorks": "An attacker impersonates a trusted sender and directs a target to a fraudulent login page, malicious attachment, or other deceptive request.",
+      "inGame": "In Level 1, examine the mailbox warning in Files and decide how to respond in the Threat Analyzer.",
+      "response": "Avoid the message link. Open the service using a known address, verify the request through a trusted channel, and report the message."
+    },
+    {
+      "id": "malware",
+      "name": "Malware",
+      "definition": "Software intentionally designed to disrupt systems, steal information, or gain unauthorized access.",
+      "howItWorks": "Malware can reach a device through malicious downloads, compromised software, or infected attachments and then execute unwanted actions."
+    },
+    {
+      "id": "ransomware",
+      "name": "Ransomware",
+      "definition": "A type of malware that encrypts data or otherwise blocks access and demands payment.",
+      "howItWorks": "After compromising a system, ransomware may encrypt files and display a ransom demand. Some groups also steal data to pressure victims."
+    },
+    {
+      "id": "ddos",
+      "name": "DDoS Attack",
+      "definition": "A distributed denial-of-service attack attempts to make a service unavailable by overwhelming it with traffic or requests.",
+      "howItWorks": "Many devices or sources send traffic toward the same service, exhausting network capacity or server resources."
+    },
+    {
+      "id": "social-engineering",
+      "name": "Social Engineering",
+      "definition": "The manipulation of people into taking actions or revealing information that compromises security.",
+      "howItWorks": "Attackers exploit trust, urgency, authority, or curiosity to persuade targets to bypass normal security precautions."
+    },
+    {
+      "id": "weak-passwords",
+      "name": "Guessable Passwords",
+      "definition": "A guessable password uses predictable information such as a pet name, common word, or date.",
+      "howItWorks": "Someone who knows personal details or finds an obvious hint may be able to guess the password.",
+      "inGame": "In the tutorial, compare the note near Grandma’s computer with the cat’s name tag. The hint and the name tag together reveal the password.",
+      "response": "Use a password manager to generate and store a long, unique password for every account. Enable multifactor authentication when available."
+    }
   ]
 }

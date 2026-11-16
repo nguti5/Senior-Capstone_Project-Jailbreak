@@ -12,6 +12,10 @@ public sealed class AssistantGuidance
         public string threatId;
         public string[] hints;
         public string[] clues;
+        public string briefing;
+        public string question;
+        public string[] choices;
+        public string[] feedback;
     }
     [Serializable] public class Content
     {
@@ -41,6 +45,10 @@ public sealed class AssistantGuidance
             content = new Content { entries = new Entry[0] };
     }
 
+    public Entry SceneLesson(string scene) =>
+        Array.Find(content.entries, entry => entry != null && entry.scene == scene &&
+            !string.IsNullOrEmpty(entry.briefing));
+
     public void SetThreat(string id) => ThreatId = id;
 
     public bool Tick(string scene, string objectiveId, float elapsed)
@@ -61,17 +69,21 @@ public sealed class AssistantGuidance
 
     private Entry Find(string scene, string objectiveId, bool clue)
     {
+        Entry lesson = SceneLesson(scene);
+        if (clue && lesson != null && lesson.threatId == ThreatId && lesson.clues?.Length > 0)
+            return lesson;
+
         Entry fallback = null;
         foreach (var entry in content.entries)
         {
             if (entry == null) continue;
             if (clue)
             {
-                if (!string.IsNullOrEmpty(ThreatId) && entry.threatId == ThreatId)
+                if (!string.IsNullOrEmpty(ThreatId) && entry.threatId == ThreatId && string.IsNullOrEmpty(entry.scene))
                     return entry;
                 continue;
             }
-            if (entry.scene != scene) continue;
+            if (entry.scene != scene || (entry.hints == null || entry.hints.Length == 0)) continue;
             if (!string.IsNullOrEmpty(objectiveId) && entry.objectiveId == objectiveId)
                 return entry;
             if (string.IsNullOrEmpty(entry.objectiveId)) fallback = entry;
