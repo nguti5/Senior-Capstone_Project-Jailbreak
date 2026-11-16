@@ -1068,6 +1068,7 @@ MonoBehaviour:
   - "The File app holds intel on your target. Read it. Use it. Don\u2019t delete Grandma\u2019s recipes."
   - <b>E</b> = open doors and interact. Some are locked and need a key, so keep an eye out for shiny things.
   - <b>I</b> = inventory. Save things that look useful.
+  - "Press <b>Esc</b>, then choose <b>Documentation</b> to look up threats. You can also open Documentation from the <b>Tab</b> Assistant. Use <b>H</b> for a puzzle hint and <b>C</b> for a threat clue."
   tutorialId: 
   playOnStart: 1
   onlyOnce: 1

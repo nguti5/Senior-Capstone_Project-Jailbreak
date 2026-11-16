@@ -17,6 +17,8 @@ public sealed class PlaceholderGameUI : MonoBehaviour
         public string name;
         public string definition;
         public string howItWorks;
+        public string inGame;
+        public string response;
     }
 
     [Serializable]
@@ -42,6 +44,8 @@ public sealed class PlaceholderGameUI : MonoBehaviour
     private TMP_Text documentationBody;
     private Transform documentationListContent;
     private Button selectedThreatButton;
+    private readonly System.Collections.Generic.Dictionary<string, Action> threatSelections =
+        new System.Collections.Generic.Dictionary<string, Action>();
     private ThreatCollection documentation;
 
     private AssistantGuidance assistant;
@@ -114,10 +118,14 @@ public sealed class PlaceholderGameUI : MonoBehaviour
         documentationBody = null;
         documentationListContent = null;
         selectedThreatButton = null;
+        threatSelections.Clear();
         player = null;
         cursorSnapshotTaken = false;
 
         if (IsExistingMenu(scene.name)) return;
+
+        var lesson = assistant.SceneLesson(scene.name);
+        if (lesson != null) assistant.SetThreat(lesson.threatId);
 
         EnsureEventSystem();
         GameObject root = new GameObject("Gameplay UI Canvas", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
@@ -135,18 +143,42 @@ public sealed class PlaceholderGameUI : MonoBehaviour
         MakeLabel("PROJECT JAILBREAK  |  PLACEHOLDER HUD", hud.transform, new Vector2(14f, -12f), new Vector2(530f, 32f), 22f);
         statusLabel = MakeLabel("STATUS: ACTIVE", hud.transform, new Vector2(14f, -52f), new Vector2(530f, 28f), 17f);
         objectiveLabel = MakeLabel("OBJECTIVE: Explore the scene (placeholder)", hud.transform, new Vector2(14f, -87f), new Vector2(530f, 28f), 17f);
-        noticeLabel = MakeLabel("WASD: Move | ESC: Pause | TAB: Assistant\nH: Next hint | C: Threat clue", hud.transform, new Vector2(14f, -124f), new Vector2(530f, 52f), 16f);
+        noticeLabel = MakeLabel("Esc → Documentation | Tab: Assistant\nH: Next hint | C: Threat clue", hud.transform, new Vector2(14f, -124f), new Vector2(530f, 52f), 16f);
 
-        threatPanel = MakePanel("Assistant", root.transform, Vector2.one, Vector2.one, new Vector2(-20f, -20f), new Vector2(540f, 420f));
+        if (lesson != null) SetNotice(lesson.briefing);
+
+        threatPanel = MakePanel("Assistant", root.transform, Vector2.one, Vector2.one, new Vector2(-20f, -20f), new Vector2(540f, 572f));
         MakeLabel("ASSISTANT", threatPanel.transform, new Vector2(14f, -12f), new Vector2(510f, 34f), 22f);
-        assistantBody = MakeLabel("Need a hand? Request a hint for your current objective or a clue about the threat you are investigating.", threatPanel.transform, new Vector2(14f, -58f), new Vector2(510f, 240f), 20f);
+        assistantBody = MakeLabel(lesson?.question ?? lesson?.briefing ?? "Request a puzzle hint or a clue about the threat you are investigating.", threatPanel.transform, new Vector2(14f, -58f), new Vector2(510f, 240f), 20f);
         assistantBody.richText = false;
         assistantBody.enableAutoSizing = true;
         assistantBody.fontSizeMin = 12f;
         assistantBody.fontSizeMax = 20f;
         MakeButton("Next Hint (H)", threatPanel.transform, new Vector2(14f, -310f), new Vector2(245f, 42f), () => RequestGuidance(false));
         MakeButton("Threat Clue (C)", threatPanel.transform, new Vector2(275f, -310f), new Vector2(245f, 42f), () => RequestGuidance(true));
-        MakeButton("Close (Tab / Esc)", threatPanel.transform, new Vector2(14f, -366f), new Vector2(506f, 40f), ToggleThreats);
+        MakeButton("Documentation", threatPanel.transform, new Vector2(14f, -366f), new Vector2(506f, 40f), () =>
+        {
+            SetPaused(true);
+            OpenDocumentation();
+        });
+        if (lesson != null)
+        {
+            MakeButton(lesson.question == null ? "Review Scene Evidence" : "Analyze Scene Evidence",
+                threatPanel.transform, new Vector2(14f, -418f), new Vector2(506f, 40f),
+                () => assistantBody.text = lesson.question ?? lesson.briefing);
+            if (lesson.choices != null && lesson.feedback != null &&
+                lesson.choices.Length == lesson.feedback.Length && lesson.choices.Length <= 3)
+            {
+                for (int i = 0; i < lesson.choices.Length; i++)
+                {
+                    int choice = i;
+                    MakeButton(lesson.choices[i], threatPanel.transform,
+                        new Vector2(14f + 172f * i, -470f), new Vector2(162f, 40f),
+                        () => assistantBody.text = lesson.feedback[choice]);
+                }
+            }
+        }
+        MakeButton("Close (Tab / Esc)", threatPanel.transform, new Vector2(14f, -522f), new Vector2(506f, 40f), ToggleThreats);
         threatPanel.SetActive(false);
 
         BuildDocumentationPanel(root.transform);
@@ -157,7 +189,7 @@ public sealed class PlaceholderGameUI : MonoBehaviour
         MakeButton("Assistant", pausePanel.transform, new Vector2(45f, -151f), new Vector2(350f, 48f), () =>
         {
             SetPaused(false);
-            ToggleThreats();
+            if (!threatOpen) ToggleThreats();
         });
         MakeButton("Documentation", pausePanel.transform, new Vector2(45f, -211f), new Vector2(350f, 48f), OpenDocumentation);
         MakeButton("Main Menu", pausePanel.transform, new Vector2(45f, -271f), new Vector2(350f, 48f), () =>
@@ -174,7 +206,7 @@ public sealed class PlaceholderGameUI : MonoBehaviour
         documentationPanel = MakePanel("Documentation", parent, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1150f, 750f));
         MakeLabel("CYBERSECURITY DOCUMENTATION", documentationPanel.transform, new Vector2(30f, -24f), new Vector2(1060f, 44f), 30f);
         MakeLabel("THREATS", documentationPanel.transform, new Vector2(30f, -91f), new Vector2(300f, 32f), 22f);
-        MakeLabel("DEFINITION & HOW IT WORKS", documentationPanel.transform, new Vector2(380f, -91f), new Vector2(700f, 32f), 22f);
+        MakeLabel("THREAT DETAILS", documentationPanel.transform, new Vector2(380f, -91f), new Vector2(700f, 32f), 22f);
 
         GameObject listViewport = MakePanel("Threat List Viewport", documentationPanel.transform, new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(30f, -137f), new Vector2(315f, 500f));
         listViewport.GetComponent<Image>().color = new Color(0.06f, 0.08f, 0.11f, 0.8f);
@@ -279,11 +311,9 @@ public sealed class PlaceholderGameUI : MonoBehaviour
             caption.rectTransform.offsetMin = new Vector2(12f, 0f);
             caption.rectTransform.offsetMax = new Vector2(-12f, 0f);
             caption.alignment = TextAlignmentOptions.MidlineLeft;
-            button.onClick.AddListener(() =>
-            {
-                SelectThreat(capturedEntry, button);
-                SetAssistantThreat(capturedEntry.id);
-            });
+            Action select = () => SelectThreat(capturedEntry, button);
+            button.onClick.AddListener(() => select());
+            if (!string.IsNullOrEmpty(entry.id)) threatSelections[entry.id] = select;
             if (!selectedFirst)
             {
                 SelectThreat(entry, button);
@@ -299,6 +329,8 @@ public sealed class PlaceholderGameUI : MonoBehaviour
         selectedThreatButton.GetComponent<Image>().color = SelectedColor;
         documentationTitle.text = entry.name;
         documentationBody.text = "DEFINITION\n" + SafeText(entry.definition) + "\n\nHOW IT WORKS\n" + SafeText(entry.howItWorks);
+        if (!string.IsNullOrWhiteSpace(entry.inGame)) documentationBody.text += "\n\nIN THE GAME\n" + entry.inGame;
+        if (!string.IsNullOrWhiteSpace(entry.response)) documentationBody.text += "\n\nHOW TO RESPOND\n" + entry.response;
         documentationBody.rectTransform.anchoredPosition = Vector2.zero;
     }
 
@@ -310,6 +342,8 @@ public sealed class PlaceholderGameUI : MonoBehaviour
         documentationOpen = true;
         pausePanel.SetActive(false);
         documentationPanel.SetActive(true);
+        if (assistant.ThreatId != null && threatSelections.TryGetValue(assistant.ThreatId, out Action select))
+            select();
     }
 
     private void CloseDocumentation()
