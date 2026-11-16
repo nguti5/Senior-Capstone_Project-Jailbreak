@@ -19,41 +19,6 @@
       ]
     },
     {
-      "scene": "Files-Tutorial",
-      "hints": [
-        "Inspect the available objects and read any messages or files before deciding what to do next.",
-        "Compare the evidence you found with the threat documentation under Esc > Documentation."
-      ]
-    },
-    {
-      "scene": "Level1",
-      "hints": [
-        "Inspect the available objects and read any messages or files before deciding what to do next.",
-        "Compare the evidence you found with the threat documentation under Esc > Documentation."
-      ]
-    },
-    {
-      "scene": "Email-Level1",
-      "hints": [
-        "Inspect the available objects and read any messages or files before deciding what to do next.",
-        "Compare the evidence you found with the threat documentation under Esc > Documentation."
-      ]
-    },
-    {
-      "scene": "Files-Level1",
-      "hints": [
-        "Inspect the available objects and read any messages or files before deciding what to do next.",
-        "Compare the evidence you found with the threat documentation under Esc > Documentation."
-      ]
-    },
-    {
-      "scene": "ThreatAnalyzer-Level1",
-      "hints": [
-        "Inspect the available objects and read any messages or files before deciding what to do next.",
-        "Compare the evidence you found with the threat documentation under Esc > Documentation."
-      ]
-    },
-    {
       "threatId": "phishing",
       "clues": [
         "A familiar name or logo does not prove a message is trustworthy. Inspect what it asks you to do.",
@@ -87,6 +52,115 @@
         "Be cautious when someone uses authority, trust, or urgency to bypass normal checks.",
         "Verify unusual requests independently before sharing information or granting access."
       ]
+    },
+    {
+      "scene": "Tutorial",
+      "threatId": "weak-passwords",
+      "briefing": "Find the keycard and try the Files door. Esc → Documentation opens the threat reference.",
+      "clues": [
+        "The locked door models access control. A keycard shows you have a credential, and the door checks it before granting access."
+      ]
+    },
+    {
+      "scene": "Tutorial-Room2",
+      "threatId": "weak-passwords",
+      "briefing": "Grandma left a password hint near the computer. Open the Assistant with Tab to review evidence.",
+      "hints": [
+        "Read the note by the computer, then look around for something that matches it."
+      ],
+      "clues": [
+        "A password hint can expose personal information. Look for an object that reveals the detail mentioned in the note.",
+        "If someone can learn a password by looking around the room, it is easy to guess. Use long, unique passwords."
+      ]
+    },
+    {
+      "scene": "Tutorial-Room2",
+      "objectiveId": "find_password",
+      "hints": [
+        "Read the note beside the computer.",
+        "Find the cat and use E to inspect its name tag."
+      ]
+    },
+    {
+      "scene": "Tutorial-Room2",
+      "objectiveId": "unlock_computer",
+      "hints": [
+        "Return to the computer and press E.",
+        "Use the detail from the name tag to test Grandma’s password hint."
+      ]
+    },
+    {
+      "scene": "BattleScene1",
+      "threatId": "phishing",
+      "briefing": "A suspicious link can start an incident. Use C for a clue or Esc → Documentation to review phishing.",
+      "clues": [
+        "An unexpected link can take you to a deceptive page. Verify the request through a trusted channel before acting."
+      ]
+    },
+    {
+      "scene": "Level1",
+      "threatId": "phishing",
+      "briefing": "Investigate the suspicious message. Visit Files for evidence, then take it to the Threat Analyzer.",
+      "hints": [
+        "Use the Files door to locate the saved message.",
+        "After reviewing the message in the Assistant, return to the hub and use the Threat Analyzer door."
+      ]
+    },
+    {
+      "scene": "Files-Level1",
+      "threatId": "phishing",
+      "briefing": "Saved message: “Your mailbox closes today. Confirm your password to keep access.” Press Tab to review it.",
+      "hints": [
+        "Review the message in the Assistant, then return to the hub and enter the Threat Analyzer."
+      ],
+      "clues": [
+        "The message creates a deadline and asks for a password. Check the request using a channel you already trust.",
+        "A familiar display name does not verify who sent a message. Compare the address with the real organization’s domain."
+      ]
+    },
+    {
+      "scene": "Email-Level1",
+      "threatId": "phishing",
+      "briefing": "The mailbox warning claims to be from Support. The sender address is on an unfamiliar domain.",
+      "hints": [
+        "Review the sender and message in the Assistant. Return to the hub to reach the Threat Analyzer."
+      ],
+      "clues": [
+        "The display name and the sender address provide different evidence. Verify unexpected requests independently."
+      ]
+    },
+    {
+      "scene": "ThreatAnalyzer-Level1",
+      "threatId": "phishing",
+      "briefing": "Press Tab to analyze the mailbox warning using the evidence from Files.",
+      "hints": [
+        "Review the mailbox warning in Files if you missed it. Then select Analyze Scene Evidence in the Assistant.",
+        "Focus on what the message asks the recipient to do and how it pressures them to act."
+      ],
+      "clues": [
+        "An urgent password request from an unfamiliar sender is consistent with phishing."
+      ],
+      "question": "A message threatens to close your mailbox unless you enter your password through its link. The sender claims to be Support, but the address uses an unfamiliar domain. How should you respond?",
+      "choices": [
+        "Use the link",
+        "Reply to sender",
+        "Verify and report"
+      ],
+      "feedback": [
+        "The link could lead to a fake login page. Use a service address you already trust to check the account.",
+        "A reply goes back to the same unverified sender. Contact support through a known channel instead.",
+        "Correct. The urgent password request and unfamiliar sender suggest phishing. Verify through a known channel and report the message."
+      ]
+    },
+    {
+      "scene": "MinionBattle-Level1",
+      "threatId": "phishing",
+      "briefing": "Review the phishing investigation in Esc → Documentation."
+    },
+    {
+      "scene": "BossBattle-Level1",
+      "threatId": "phishing",
+      "briefing": "Review the phishing investigation in Esc → Documentation."
     }
   ]
 }

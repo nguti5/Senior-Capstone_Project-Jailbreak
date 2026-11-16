@@ -116,7 +116,6 @@ public class ComputerInteraction : MonoBehaviour, IInteractible
         }
 
         string attempt = passwordInput.text.Trim();
-        Debug.Log($"Checking '{attempt}' against '{correctPassword}'");
 
         if (string.Equals(attempt, correctPassword, StringComparison.OrdinalIgnoreCase))
             StartCoroutine(Success());
@@ -124,10 +123,19 @@ public class ComputerInteraction : MonoBehaviour, IInteractible
             StartCoroutine(Failure());
     }
     
+
     private IEnumerator Success()
     {
         busy = true;
         unlocked = true;
+
+        SetFeedback("Access granted!");
+        PlaceholderGameUI.SetNotice(
+            "The pet name was easy to guess from a nearby clue. Use a long, unique password for each account.");
+
+        // Complete the tutorial objective
+        if (ObjectiveManager.Instance != null &&
+            !string.IsNullOrEmpty(objectiveId))
 
         SetFeedback("Access granted!", successColor);
 
