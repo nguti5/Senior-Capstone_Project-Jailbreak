@@ -58,17 +58,7 @@ public class PlayerInteractor : MonoBehaviour
 
             if (currentInteractible != null && interactionPrompt != null)
             {
-                string message = "INTERACT";
-
-                if (currentGlow != null)
-                {
-                    string objectName = currentGlow.gameObject.name;
-
-                    if (objectName == "TutorialKey")
-                        message = "PICK UP KEYCARD";
-                    else if (objectName == "File App (Door)")
-                        message = "OPEN DOOR";
-                }
+                string message = currentGlow != null ? currentGlow.PromptText : "INTERACT";
 
                 interactionPrompt.ShowPrompt(message);
             }

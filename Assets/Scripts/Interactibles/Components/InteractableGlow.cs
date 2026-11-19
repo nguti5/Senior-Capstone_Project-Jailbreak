@@ -6,10 +6,13 @@ public class InteractableGlow : MonoBehaviour
     [SerializeField] private Renderer targetRenderer;
     [SerializeField] private Color glowColor = Color.cyan;
     [SerializeField] private float glowIntensity = 2f;
+    [SerializeField] private string promptText = "INTERACT";
 
     private Material[] materials;
     private Color[] originalEmission;
     private bool[] hadEmission;
+    public string PromptText => promptText;
+
 
     private void Awake()
     {
