@@ -100,10 +100,28 @@
     {
       "scene": "Level1",
       "threatId": "phishing",
-      "briefing": "Investigate the suspicious message. Visit Files for evidence, then take it to the Threat Analyzer.",
+      "briefing": "Explore the room and look for a mural you can interact with.",
       "hints": [
-        "Use the Files door to locate the saved message.",
-        "After reviewing the message in the Assistant, return to the hub and use the Threat Analyzer door."
+        "Walk around the room and inspect the artwork along the walls.",
+        "Approach the mural, face it, and press E to open the phishing minigame.",
+        "Press Space to start. Target the suspicious website links and let the legitimate ones pass."
+      ],
+      "clues": [
+        "Read the domain in each link. A familiar brand name elsewhere in the address can distract from a lookalike domain.",
+        "Check for misspellings or extra words that make a domain look like a site you trust."
+      ]
+    },
+    {
+      "scene": "Level1",
+      "objectiveId": "l1_investigate_ceiling",
+      "threatId": "phishing",
+      "hints": [
+        "If the minigame is still open, press X to return to the room.",
+        "Look up and scan the ceiling. If the arrow is visible, use it to narrow down where to look."
+      ],
+      "clues": [
+        "After you clear the mural challenge, the next objective points you toward the ceiling.",
+        "Use the ceiling lights and nearby panels as landmarks while you look for the source of the noise."
       ]
     },
     {
