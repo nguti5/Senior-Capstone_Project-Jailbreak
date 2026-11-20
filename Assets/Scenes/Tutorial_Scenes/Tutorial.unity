@@ -406,7 +406,7 @@ MonoBehaviour:
   targetSceneName: Tutorial-Room2
   targetSpawnId: 
   isLocked: 1
-  unlockedByCheckpoint: get_key
+  unlockedByCheckpoint: t1_get_key
   onBeforeLoad:
     m_PersistentCalls:
       m_Calls:
@@ -419,13 +419,13 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: go_through_door
+          m_StringArgument: t1_go_through_door
           m_BoolArgument: 0
         m_CallState: 2
   onLockedAttempt:
     m_PersistentCalls:
       m_Calls: []
-  requiredItemId: TutorialKey
+  requiredItemId: tutorial_key
 --- !u!65 &121550713
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -519,7 +519,7 @@ MonoBehaviour:
   targetRenderer: {fileID: 136707171}
   glowColor: {r: 0, g: 1, b: 1, a: 1}
   glowIntensity: 2
-  promptText: INTERACT
+  promptText: OPEN DOOR
 --- !u!1 &136707168
 GameObject:
   m_ObjectHideFlags: 0
@@ -851,6 +851,7 @@ MonoBehaviour:
   tutorialId: 
   playOnStart: 1
   onlyOnce: 1
+  freezeWhilePlaying: []
   onComplete:
     m_PersistentCalls:
       m_Calls:
@@ -881,10 +882,10 @@ MonoBehaviour:
   panel: {fileID: 1365348734}
   objectiveText: {fileID: 1060573509}
   objectives:
-  - id: get_key
+  - id: t1_get_key
     description: Find the key to enter door.
     completeOnItemId: tutorial_key
-  - id: go_through_door
+  - id: t1_go_through_door
     description: Go through the door.
     completeOnItemId: 
   showUpcoming: 1
@@ -3320,7 +3321,7 @@ MonoBehaviour:
   targetRenderer: {fileID: 1268359085}
   glowColor: {r: 0, g: 1, b: 1, a: 1}
   glowIntensity: 2
-  promptText: INTERACT
+  promptText: PICK UP KEY
 --- !u!1 &1927391631
 GameObject:
   m_ObjectHideFlags: 0
