@@ -139,11 +139,12 @@ public sealed class PlaceholderGameUI : MonoBehaviour
         scaler.referenceResolution = new Vector2(1920, 1080);
         scaler.matchWidthOrHeight = 0.5f;
 
-        hud = MakePanel("Gameplay HUD", root.transform, new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(20f, -20f), new Vector2(560f, 196f));
-        MakeLabel("PROJECT JAILBREAK  |  PLACEHOLDER HUD", hud.transform, new Vector2(14f, -12f), new Vector2(530f, 32f), 22f);
-        statusLabel = MakeLabel("STATUS: ACTIVE", hud.transform, new Vector2(14f, -52f), new Vector2(530f, 28f), 17f);
-        objectiveLabel = MakeLabel("OBJECTIVE: Explore the scene (placeholder)", hud.transform, new Vector2(14f, -87f), new Vector2(530f, 28f), 17f);
-        noticeLabel = MakeLabel("Esc → Documentation | Tab: Assistant\nH: Next hint | C: Threat clue", hud.transform, new Vector2(14f, -124f), new Vector2(530f, 52f), 16f);
+        // Uncomment this block to restore the top-left placeholder HUD.
+        // hud = MakePanel("Gameplay HUD", root.transform, new Vector2(0f, 1f), new Vector2(0f, 1f), new Vector2(20f, -20f), new Vector2(560f, 196f));
+        // MakeLabel("PROJECT JAILBREAK  |  PLACEHOLDER HUD", hud.transform, new Vector2(14f, -12f), new Vector2(530f, 32f), 22f);
+        // statusLabel = MakeLabel("STATUS: ACTIVE", hud.transform, new Vector2(14f, -52f), new Vector2(530f, 28f), 17f);
+        // objectiveLabel = MakeLabel("OBJECTIVE: Explore the scene (placeholder)", hud.transform, new Vector2(14f, -87f), new Vector2(530f, 28f), 17f);
+        // noticeLabel = MakeLabel("Esc → Documentation | Tab: Assistant\nH: Next hint | C: Threat clue", hud.transform, new Vector2(14f, -124f), new Vector2(530f, 52f), 16f);
 
         if (lesson != null) SetNotice(lesson.briefing);
 
@@ -426,7 +427,7 @@ public sealed class PlaceholderGameUI : MonoBehaviour
             if (!threatOpen) ReleaseCursorSnapshot();
         }
         pausePanel.SetActive(paused && !documentationOpen);
-        hud.SetActive(!paused);
+        if (hud != null) hud.SetActive(!paused);
         threatPanel.SetActive(!paused && threatOpen);
     }
 
