@@ -406,7 +406,7 @@ MonoBehaviour:
   targetSceneName: Tutorial-Room2
   targetSpawnId: 
   isLocked: 1
-  unlockedByCheckpoint: t1_get_key
+  unlockedByCheckpoint: get_key
   onBeforeLoad:
     m_PersistentCalls:
       m_Calls:
@@ -419,13 +419,13 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: t1_go_through_door
+          m_StringArgument: go_through_door
           m_BoolArgument: 0
         m_CallState: 2
   onLockedAttempt:
     m_PersistentCalls:
       m_Calls: []
-  requiredItemId: tutorial_key
+  requiredItemId: TutorialKey
 --- !u!65 &121550713
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -519,7 +519,7 @@ MonoBehaviour:
   targetRenderer: {fileID: 136707171}
   glowColor: {r: 0, g: 1, b: 1, a: 1}
   glowIntensity: 2
-  promptText: OPEN DOOR
+  promptText: INTERACT
 --- !u!1 &136707168
 GameObject:
   m_ObjectHideFlags: 0
@@ -881,10 +881,10 @@ MonoBehaviour:
   panel: {fileID: 1365348734}
   objectiveText: {fileID: 1060573509}
   objectives:
-  - id: t1_get_key
+  - id: get_key
     description: Find the key to enter door.
     completeOnItemId: tutorial_key
-  - id: t1_go_through_door
+  - id: go_through_door
     description: Go through the door.
     completeOnItemId: 
   showUpcoming: 1
@@ -2274,18 +2274,6 @@ PrefabInstance:
       value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -2303,15 +2291,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2319,7 +2307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 99.999985
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2565,8 +2553,8 @@ RectTransform:
   - {fileID: 2083901268}
   - {fileID: 1365348735}
   - {fileID: 22188147}
-  - {fileID: 1024340422}
   - {fileID: 1648345516}
+  - {fileID: 1024340422}
   m_Father: {fileID: 274830143}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3332,7 +3320,7 @@ MonoBehaviour:
   targetRenderer: {fileID: 1268359085}
   glowColor: {r: 0, g: 1, b: 1, a: 1}
   glowIntensity: 2
-  promptText: PICK UP KEY
+  promptText: INTERACT
 --- !u!1 &1927391631
 GameObject:
   m_ObjectHideFlags: 0

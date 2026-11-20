@@ -536,7 +536,13 @@ public sealed class PlaceholderGameUI : MonoBehaviour
         textRect.offsetMin = textRect.offsetMax = Vector2.zero;
         text.alignment = TextAlignmentOptions.Center;
     }
-
+    public static void SetHUDVisible(bool visible)
+    {
+        if (instance != null && instance.hud != null)
+        {
+            instance.hud.SetActive(visible);
+        }
+    }
     public static void SetObjective(string objective)
     {
         if (instance != null && instance.objectiveLabel != null)
