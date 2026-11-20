@@ -11,6 +11,7 @@ public sealed class GameAudio : MonoBehaviour
     private static GameAudio instance;
 
     private AudioSource music;
+    private AudioListener fallbackListener;
     private AudioClip backgroundTrack;
     private AudioClip battleTrack;
     private float volume;
@@ -42,20 +43,69 @@ public sealed class GameAudio : MonoBehaviour
         ApplySettings();
 
         SceneManager.sceneLoaded += OnSceneLoaded;
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
+        SceneManager.activeSceneChanged += OnActiveSceneChanged;
+    }
+
+    private void Start()
+    {
+        // The Editor can start Play Mode with a scene already open.
+        RefreshAudioListener();
+        PlayMusicForScene(SceneManager.GetActiveScene());
     }
 
     private void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneUnloaded -= OnSceneUnloaded;
+        SceneManager.activeSceneChanged -= OnActiveSceneChanged;
 
         if (instance == this) instance = null;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        RefreshAudioListener();
         if (mode == LoadSceneMode.Additive) return;
 
         CloseOptions();
+        PlayMusicForScene(scene);
+    }
+
+    private void OnSceneUnloaded(Scene scene)
+    {
+        RefreshAudioListener();
+    }
+
+    private void OnActiveSceneChanged(Scene previousScene, Scene activeScene)
+    {
+        // An additive scene takes over the soundtrack when it becomes active.
+        if (!activeScene.isLoaded) return;
+
+        RefreshAudioListener();
+        PlayMusicForScene(activeScene);
+    }
+
+    private void RefreshAudioListener()
+    {
+        foreach (var listener in FindObjectsByType<AudioListener>(FindObjectsSortMode.None))
+        {
+            if (listener == fallbackListener || !listener.isActiveAndEnabled) continue;
+
+            if (fallbackListener != null)
+                fallbackListener.enabled = false;
+            return;
+        }
+
+        if (fallbackListener == null)
+            fallbackListener = gameObject.AddComponent<AudioListener>();
+        else
+            fallbackListener.enabled = true;
+    }
+
+    private void PlayMusicForScene(Scene scene)
+    {
+        if (!scene.IsValid()) return;
 
         bool isBattle = scene.name.IndexOf("Battle", StringComparison.OrdinalIgnoreCase) >= 0;
         AudioClip nextTrack = isBattle ? battleTrack : backgroundTrack;
