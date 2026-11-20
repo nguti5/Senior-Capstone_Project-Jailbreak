@@ -70,8 +70,19 @@ public sealed class AssistantGuidance
     private Entry Find(string scene, string objectiveId, bool clue)
     {
         Entry lesson = SceneLesson(scene);
-        if (clue && lesson != null && lesson.threatId == ThreatId && lesson.clues?.Length > 0)
-            return lesson;
+        if (clue)
+        {
+            if (!string.IsNullOrEmpty(objectiveId))
+            {
+                Entry objectiveClue = Array.Find(content.entries, entry => entry != null &&
+                    entry.scene == scene && entry.objectiveId == objectiveId &&
+                    entry.threatId == ThreatId && entry.clues?.Length > 0);
+                if (objectiveClue != null) return objectiveClue;
+            }
+
+            if (lesson != null && lesson.threatId == ThreatId && lesson.clues?.Length > 0)
+                return lesson;
+        }
 
         Entry fallback = null;
         foreach (var entry in content.entries)
@@ -100,6 +111,8 @@ public sealed class AssistantGuidance
                 ? "No threat has been identified here yet. Investigate suspicious objects and compare the evidence with the cybersecurity documentation."
                 : "No specific hint is available here yet. Review your current objective, inspect nearby objects, and try E when an interaction prompt appears.";
         string key = scene + "/" + (clue ? ThreatId : objectiveId) + "/" + clue;
+        if (clue && !string.IsNullOrEmpty(entry.objectiveId))
+            key += "/" + entry.objectiveId;
         positions.TryGetValue(key, out int index);
         // Remain on the strongest hint instead of wrapping back to the first.
         index = Mathf.Min(index, messages.Length - 1);

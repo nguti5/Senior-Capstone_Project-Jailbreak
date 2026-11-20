@@ -1,8 +1,8 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 using TMPro;
-using System.Collections;
 
 public class FishingGameManager : MonoBehaviour
 {
@@ -17,8 +17,8 @@ public class FishingGameManager : MonoBehaviour
 
     [Header("Level Rewards")]
     [SerializeField] private GameObject ceilingArrow;
-    [Header("Victory Notification")]
-    [SerializeField] private GameObject ceilingHintPopup;
+    [SerializeField] private UnityEvent onWon;
+
     private int score;
     private int lives;
     private bool gameStarted;
@@ -149,11 +149,7 @@ public class FishingGameManager : MonoBehaviour
             ceilingArrow.SetActive(true);
             Debug.Log("Ceiling arrow activated!");
         }
-        if (ceilingHintPopup != null)
-        {
-            ceilingHintPopup.SetActive(true);
-            StartCoroutine(HideCeilingHintAfterDelay());
-        }
+        onWon?.Invoke();
         Debug.Log("PHISHERMEN COMPLETED! Final Score: " + score);
     }
 
@@ -164,14 +160,5 @@ public class FishingGameManager : MonoBehaviour
 
         if (livesText != null)
             livesText.text = "LIVES: " + lives;
-    }
-    private IEnumerator HideCeilingHintAfterDelay()
-    {
-        yield return new WaitForSecondsRealtime(7f);
-
-        if (ceilingHintPopup != null)
-        {
-            ceilingHintPopup.SetActive(false);
-        }
     }
 }
