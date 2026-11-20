@@ -240,4 +240,12 @@ public class ObjectiveManager : MonoBehaviour
         if (finished)
             onAllComplete?.Invoke();
     }
+
+    public bool IsObjectiveDone(string id)
+    {
+        if (SaveManager.IsComplete(id)) return true;
+
+        int index = objectives.FindIndex(o => o.id == id);
+        return index >= 0 && index < completed;
+    }
 }

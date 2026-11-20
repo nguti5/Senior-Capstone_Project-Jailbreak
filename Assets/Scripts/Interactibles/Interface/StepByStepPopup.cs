@@ -19,6 +19,10 @@ public class StepByStepPopup : MonoBehaviour
     public bool playOnStart = true;
     public bool onlyOnce = true;
 
+    [Header("Freeze (optional)")]
+    [Tooltip("Scripts to switch off while the lines are showing, e.g. the player controller and interactor.")]
+    [SerializeField] private MonoBehaviour[] freezeWhilePlaying;
+
     [Header("Events")]
     public UnityEvent onComplete;
 
@@ -50,6 +54,7 @@ public class StepByStepPopup : MonoBehaviour
         running = true;
         startFrame = Time.frameCount;
         ShowStep(0);
+        SetFrozen(true);
     }
 
     void Update()
@@ -78,6 +83,14 @@ public class StepByStepPopup : MonoBehaviour
             ShowStep(current);
     }
 
+    private void SetFrozen(bool frozen)
+    {
+        if (freezeWhilePlaying == null) return;
+
+        foreach (MonoBehaviour script in freezeWhilePlaying)
+            if (script != null) script.enabled = !frozen;
+    }
+
     void Finish()
     {
         running = false;
@@ -88,6 +101,7 @@ public class StepByStepPopup : MonoBehaviour
             SaveManager.MarkComplete(DoneId);
         }
 
+        SetFrozen(false);
         onComplete?.Invoke();
     }
 }

@@ -346,33 +346,9 @@ function validSlot(args) {
 }
 
 handlers.claimTutorialKey = function (args, context) {
-    var playerId = currentPlayerId;
-    var itemId = "tutorial_key";
-    var slot = validSlot(args);
-
-    if (slot === null)
-        return { success: false, alreadyClaimed: false, message: "Missing or invalid slot." };
-
-    if (slotOwnsItem(playerId, itemId, slot))
-        return { success: true, alreadyClaimed: true, message: "This slot already has the tutorial key." };
-
-    var grant = server.GrantItemsToUser({
-        PlayFabId: playerId,
-        ItemIds: [itemId],
-        CatalogVersion: "TutorialCatalog"
-    });
-
-    var results = grant.ItemGrantResults;
-    if (!results || results.length === 0 || !results[0].ItemInstanceId)
-        return { success: false, alreadyClaimed: false, message: "Grant did not return an item." };
-
-    server.UpdateUserInventoryItemCustomData({
-        PlayFabId: playerId,
-        ItemInstanceId: results[0].ItemInstanceId,
-        Data: { slot: slot }
-    });
-
-    return { success: true, alreadyClaimed: false, message: "Tutorial key granted for slot " + slot + "." };
+    args = args || {};
+    args.itemId = "tutorial_key";
+    return handlers.claimItem(args, context);
 };
 
 handlers.clearSlotInventory = function (args, context) {
@@ -390,4 +366,40 @@ handlers.clearSlotInventory = function (args, context) {
         }
     }
     return { success: true, removed: removed };
+};
+
+// only these items can be claimed from the game client
+var CLAIMABLE_ITEMS = ["tutorial_key", "mailroom_key"];
+
+handlers.claimItem = function (args, context) {
+    var playerId = currentPlayerId;
+    var itemId = String(args && args.itemId ? args.itemId : "");
+    var slot = validSlot(args);
+
+    if (CLAIMABLE_ITEMS.indexOf(itemId) === -1)
+        return { success: false, alreadyClaimed: false, message: "That item can't be claimed." };
+
+    if (slot === null)
+        return { success: false, alreadyClaimed: false, message: "Missing or invalid slot." };
+
+    if (slotOwnsItem(playerId, itemId, slot))
+        return { success: true, alreadyClaimed: true, message: "This slot already has " + itemId + "." };
+
+    var grant = server.GrantItemsToUser({
+        PlayFabId: playerId,
+        ItemIds: [itemId],
+        CatalogVersion: "TutorialCatalog"
+    });
+
+    var results = grant.ItemGrantResults;
+    if (!results || results.length === 0 || !results[0].ItemInstanceId)
+        return { success: false, alreadyClaimed: false, message: "Grant did not return an item." };
+
+    server.UpdateUserInventoryItemCustomData({
+        PlayFabId: playerId,
+        ItemInstanceId: results[0].ItemInstanceId,
+        Data: { slot: slot }
+    });
+
+    return { success: true, alreadyClaimed: false, message: itemId + " granted for slot " + slot + "." };
 };

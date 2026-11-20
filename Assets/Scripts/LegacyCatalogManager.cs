@@ -107,7 +107,7 @@ public class LegacyCatalogManager : MonoBehaviour
     }
 
     [Serializable] private class ItemCustomData { public string slot; }
-    [Serializable] private class SlotArgs { public int slot; } 
+    [Serializable] private class SlotArgs { public int slot; public string itemId; } 
     [Serializable]
     private class CloudScriptRequest
     {
@@ -136,6 +136,68 @@ public class LegacyCatalogManager : MonoBehaviour
         public bool success;
         public bool alreadyClaimed;
         public string message;
+    }
+
+    public void ClaimItem(string itemId, Action<bool> onComplete)
+    {
+        if (string.IsNullOrEmpty(sessionTicket))
+        {
+            Debug.LogWarning("PlayFab login is not ready yet.");
+            onComplete?.Invoke(false);
+            return;
+        }
+
+        StartCoroutine(ClaimItemRequest(itemId, onComplete));
+    }
+
+    private IEnumerator ClaimItemRequest(string itemId, Action<bool> onComplete)
+    {
+        string url = $"https://{TitleId}.playfabapi.com/Client/ExecuteCloudScript";
+
+        var body = new CloudScriptRequest
+        {
+            FunctionName = "claimItem",
+            GeneratePlayStreamEvent = false,
+            FunctionParameter = new SlotArgs { slot = SaveManager.CurrentSlot, itemId = itemId }
+        };
+
+        using (UnityWebRequest request = CreatePostRequest(url, JsonUtility.ToJson(body)))
+        {
+            request.SetRequestHeader("X-Authorization", sessionTicket);
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Claim request failed: " + request.downloadHandler.text);
+                onComplete?.Invoke(false);
+                yield break;
+            }
+
+            Debug.Log("Claim response: " + request.downloadHandler.text);
+
+            CloudScriptResponse response =
+                JsonUtility.FromJson<CloudScriptResponse>(request.downloadHandler.text);
+
+            if (response?.data?.FunctionResult != null && response.data.FunctionResult.success)
+            {
+                yield return StartCoroutine(LoadInventory(sessionTicket));
+
+                if (HasItem(itemId))
+                {
+                    onComplete?.Invoke(true);
+                }
+                else
+                {
+                    Debug.LogError("Claim reported success, but " + itemId + " isn't in this slot's inventory.");
+                    onComplete?.Invoke(false);
+                }
+            }
+            else
+            {
+                Debug.LogError("PlayFab did not confirm the claim of " + itemId);
+                onComplete?.Invoke(false);
+            }
+        }
     }
 
     private void Awake()                                                // NEW

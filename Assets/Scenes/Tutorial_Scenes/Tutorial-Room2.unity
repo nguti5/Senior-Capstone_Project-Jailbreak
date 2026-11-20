@@ -527,10 +527,10 @@ MonoBehaviour:
   panel: {fileID: 971164718}
   objectiveText: {fileID: 1983558303}
   objectives:
-  - id: find_password
+  - id: t2_find_password
     description: Find the password for the computer.
     completeOnItemId: 
-  - id: unlock_computer
+  - id: t2_unlock_computer
     description: ' Login to computer'
     completeOnItemId: 
   showUpcoming: 1
@@ -1782,7 +1782,7 @@ MonoBehaviour:
   catName: Peenut
   catNameTagPanel: {fileID: 242319966}
   displayDuration: 4
-  objectiveId: find_password
+  objectiveId: t2_find_password
 --- !u!136 &346303524
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1821,6 +1821,7 @@ MonoBehaviour:
   targetRenderer: {fileID: 130357537}
   glowColor: {r: 0, g: 1, b: 1, a: 1}
   glowIntensity: 2
+  promptText: INTERACT
 --- !u!1 &355478726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1891,7 +1892,7 @@ MonoBehaviour:
   closeDelay: 1.5
   playerController: {fileID: 1708214186}
   playerInteractor: {fileID: 1797334386}
-  objectiveId: unlock_computer
+  objectiveId: t2_unlock_computer
 --- !u!1 &402262773
 GameObject:
   m_ObjectHideFlags: 0
@@ -7749,6 +7750,7 @@ MonoBehaviour:
   targetRenderer: {fileID: 2041120257}
   glowColor: {r: 0, g: 1, b: 1, a: 1}
   glowIntensity: 2
+  promptText: UNLOCK
 --- !u!1 &2066183141
 GameObject:
   m_ObjectHideFlags: 0

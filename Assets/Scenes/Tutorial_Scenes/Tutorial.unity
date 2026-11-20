@@ -406,7 +406,7 @@ MonoBehaviour:
   targetSceneName: Tutorial-Room2
   targetSpawnId: 
   isLocked: 1
-  unlockedByCheckpoint: get_key
+  unlockedByCheckpoint: t1_get_key
   onBeforeLoad:
     m_PersistentCalls:
       m_Calls:
@@ -419,13 +419,13 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: go_through_door
+          m_StringArgument: t1_go_through_door
           m_BoolArgument: 0
         m_CallState: 2
   onLockedAttempt:
     m_PersistentCalls:
       m_Calls: []
-  requiredItemId: TutorialKey
+  requiredItemId: tutorial_key
 --- !u!65 &121550713
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -519,6 +519,7 @@ MonoBehaviour:
   targetRenderer: {fileID: 136707171}
   glowColor: {r: 0, g: 1, b: 1, a: 1}
   glowIntensity: 2
+  promptText: OPEN DOOR
 --- !u!1 &136707168
 GameObject:
   m_ObjectHideFlags: 0
@@ -880,10 +881,10 @@ MonoBehaviour:
   panel: {fileID: 1365348734}
   objectiveText: {fileID: 1060573509}
   objectives:
-  - id: get_key
+  - id: t1_get_key
     description: Find the key to enter door.
     completeOnItemId: tutorial_key
-  - id: go_through_door
+  - id: t1_go_through_door
     description: Go through the door.
     completeOnItemId: 
   showUpcoming: 1
@@ -1712,7 +1713,7 @@ PrefabInstance:
     - target: {fileID: 4217214417798346436, guid: 23037fed9f539324f960f7f9cb59edc1, type: 3}
       propertyPath: interactionPrompt
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1024340423}
     - target: {fileID: 4217214417798346436, guid: 23037fed9f539324f960f7f9cb59edc1, type: 3}
       propertyPath: interactionReference
       value: 
@@ -2273,6 +2274,18 @@ PrefabInstance:
       value: 65
       objectReference: {fileID: 0}
     - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -2290,15 +2303,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -2306,7 +2319,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 100
+      value: 99.999985
       objectReference: {fileID: 0}
     - target: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2330,6 +2343,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6514414398806738927, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
   m_PrefabInstance: {fileID: 1024340421}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1024340423 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2273322727904655789, guid: 8af3875cf96787249bd65b85a42b1cdd, type: 3}
+  m_PrefabInstance: {fileID: 1024340421}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f76112cdbbba8224a9a68bc97b63cbb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractionPromptUI
 --- !u!1 &1049417480
 GameObject:
   m_ObjectHideFlags: 0
@@ -2541,8 +2565,8 @@ RectTransform:
   - {fileID: 2083901268}
   - {fileID: 1365348735}
   - {fileID: 22188147}
-  - {fileID: 1648345516}
   - {fileID: 1024340422}
+  - {fileID: 1648345516}
   m_Father: {fileID: 274830143}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3308,6 +3332,7 @@ MonoBehaviour:
   targetRenderer: {fileID: 1268359085}
   glowColor: {r: 0, g: 1, b: 1, a: 1}
   glowIntensity: 2
+  promptText: PICK UP KEY
 --- !u!1 &1927391631
 GameObject:
   m_ObjectHideFlags: 0
