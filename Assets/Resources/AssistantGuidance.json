@@ -123,10 +123,18 @@
       "threatId": "phishing",
       "briefing": "The mailbox warning claims to be from Support. The sender address is on an unfamiliar domain.",
       "hints": [
-        "Review the sender and message in the Assistant. Return to the hub to reach the Threat Analyzer."
+        "Check the full sender address. Does the domain after @ match the organization the sender claims to represent?",
+        "Read the greeting. Does it use your name or a generic greeting like “Dear Customer”?",
+        "Look for pressure. Does the message set a rushed deadline or threaten to close your account?",
+        "Check what the message asks for. Does it request a password, bank details, or other personal information?",
+        "Check the link without clicking. Does its actual destination match the label and the organization’s website?",
+        "Does the message fit your life? Do you recognize the company, policy, order, or account it mentions?"
       ],
       "clues": [
-        "The display name and the sender address provide different evidence. Verify unexpected requests independently."
+        "Phishing emails impersonate people and organizations you trust. A familiar display name is easy to copy. Inspect the full sender address.",
+        "Scammers use deadlines and threats to get you to act before you think. Pause and verify the warning through a channel you already trust.",
+        "Be wary of messages that ask you to “confirm” sensitive details through a link. If you need to check your account, open the company’s official site or app directly.",
+        "A link can display one address and lead somewhere else. Hover over it without clicking to preview where it actually goes."
       ]
     },
     {
