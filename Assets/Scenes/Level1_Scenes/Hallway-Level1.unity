@@ -119,6 +119,142 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &141550430
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 141550431}
+  - component: {fileID: 141550433}
+  - component: {fileID: 141550432}
+  m_Layer: 0
+  m_Name: BossInteraction
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &141550431
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141550430}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -228.36841, y: -453.3231, z: 56.55991}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1497016806}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &141550432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141550430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a61554e7129dfff4eb4c0e280af99ba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BattleEncounter
+  enemyCreature: {fileID: 11400000, guid: 2244ff1a3124d8b4ab392f67f35fb96b, type: 2}
+  enemyLevel: 5
+  oneTimeOnly: 1
+  canFlee: 0
+  onPlayerWon:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1269722324}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: Load
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: EndGame
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPlayerLost:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1269722326}
+        m_TargetAssemblyTypeName: GameOverPanel, Assembly-CSharp
+        m_MethodName: Show
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPlayerFled:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &141550433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141550430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fddde5166936c04b97d0a3810279faa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StepByStepPopup
+  popupPanel: {fileID: 1392794607}
+  popupText: {fileID: 429554215}
+  steps:
+  - 'Hello, Agent
+
+    I''m surprised to see you made it this far...'
+  - "You may have beat my minions, but you\u2019re deep inside Grandma\u2019s system now, and this is <color=#FF5555>MY</color> territory."
+  - "Muahahahahaha! Every inbox has a weak spot. Let\u2019s find yours."
+  tutorialId: boss_interaction
+  playOnStart: 0
+  onlyOnce: 1
+  freezeWhilePlaying:
+  - {fileID: 1531950909}
+  - {fileID: 1531950908}
+  onComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1269722320}
+        m_TargetAssemblyTypeName: ObjectiveManager, Assembly-CSharp
+        m_MethodName: Complete
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: l1h_find_enemy
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 141550432}
+        m_TargetAssemblyTypeName: BattleEncounter, Assembly-CSharp
+        m_MethodName: StartBattle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!43 &339653629
 Mesh:
   m_ObjectHideFlags: 0
@@ -629,6 +765,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &564944143
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 564944145}
+  - component: {fileID: 564944144}
+  m_Layer: 0
+  m_Name: LegacyCatalogManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &564944144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564944143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc2c7302efedb14cb18f6e1c5045c6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LegacyCatalogManager
+--- !u!4 &564944145
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 564944143}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -238.13852, y: -456.0296, z: 62.7564}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &678293262
 GameObject:
   m_ObjectHideFlags: 0
@@ -692,7 +872,6 @@ GameObject:
   m_Component:
   - component: {fileID: 768648292}
   - component: {fileID: 768648291}
-  - component: {fileID: 768648290}
   - component: {fileID: 768648293}
   m_Layer: 0
   m_Name: Main Camera
@@ -701,14 +880,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!81 &768648290
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 768648289}
-  m_Enabled: 1
 --- !u!20 &768648291
 Camera:
   m_ObjectHideFlags: 0
@@ -927,6 +1098,37 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6499702529898874635, guid: 8376d9e28a6c2264fabbd2d3f5c89814, type: 3}
   m_PrefabInstance: {fileID: 788203592}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1216733329
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1216733330}
+  m_Layer: 0
+  m_Name: Interactables
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1216733330
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216733329}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -228.36841, y: -453.3231, z: 56.55991}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1256435596
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1048,13 +1250,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1269722318}
-  - component: {fileID: 1269722319}
   - component: {fileID: 1269722321}
-  - component: {fileID: 1269722320}
-  - component: {fileID: 1269722322}
+  - component: {fileID: 1269722319}
   - component: {fileID: 1269722324}
+  - component: {fileID: 1269722320}
   - component: {fileID: 1269722325}
-  - component: {fileID: 1269722323}
   - component: {fileID: 1269722326}
   m_Layer: 0
   m_Name: HallwayManager
@@ -1109,14 +1309,14 @@ MonoBehaviour:
   panel: {fileID: 2125510581}
   objectiveText: {fileID: 2125510580}
   objectives:
-  - id: l1_find_enemy
+  - id: l1h_find_enemy
     description: Find enemy to DEFEAT
     completeOnItemId: 
   showUpcoming: 1
   panelRect: {fileID: 2125510579}
   toggleKey: 29
   padding: 24
-  finishDelay: 1.5
+  finishDelay: 1
   hidePanelWhenDone: 1
   onAllComplete:
     m_PersistentCalls:
@@ -1139,108 +1339,6 @@ MonoBehaviour:
   inventorySlotPrefab: {fileID: 3904825348404227397, guid: 7c35ab7c7dde917418a80fa8a98534fa, type: 3}
   playerController: {fileID: 1531950909}
   playerInteractor: {fileID: 1531950908}
---- !u!114 &1269722322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1269722317}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fddde5166936c04b97d0a3810279faa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StepByStepPopup
-  popupPanel: {fileID: 1392794607}
-  popupText: {fileID: 429554215}
-  steps:
-  - 'Hello, Agent
-
-    I''m surprised to see you made it this far...'
-  - "You may have beat my minions, but you\u2019re deep inside Grandma\u2019s system now, and this is <color=#FF5555>MY</color> territory."
-  - "Muahahahahaha! Every inbox has a weak spot. Let\u2019s find yours."
-  tutorialId: boss_interaction
-  playOnStart: 0
-  onlyOnce: 1
-  freezeWhilePlaying:
-  - {fileID: 1531950909}
-  - {fileID: 1531950908}
-  onComplete:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1269722320}
-        m_TargetAssemblyTypeName: ObjectiveManager, Assembly-CSharp
-        m_MethodName: Complete
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: l1_find_enemy
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1269722323}
-        m_TargetAssemblyTypeName: BattleEncounter, Assembly-CSharp
-        m_MethodName: StartBattle
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: l1_find_enemy
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &1269722323
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1269722317}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a61554e7129dfff4eb4c0e280af99ba1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BattleEncounter
-  enemyCreature: {fileID: 11400000, guid: 2244ff1a3124d8b4ab392f67f35fb96b, type: 2}
-  enemyLevel: 5
-  oneTimeOnly: 1
-  canFlee: 0
-  onPlayerWon:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1269722324}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: Load
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: EndGame
-          m_BoolArgument: 0
-        m_CallState: 2
-  onPlayerLost:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1269722326}
-        m_TargetAssemblyTypeName: GameOverPanel, Assembly-CSharp
-        m_MethodName: Show
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onPlayerFled:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1269722324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1267,7 +1365,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RestartLevel
   progressPrefixes:
   - l1_
-  itemsToRemove: []
+  - l1m_
+  - l1h_
+  itemsToRemove:
+  - PortalRoom_key
+  - mailroom_key
   delay: 0.5
   sceneToLoad: Level1
   spawnId: 
@@ -2004,13 +2106,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1497016805}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -805.74567, y: -569.2232, z: 541.1741}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 446.3684, y: 455.3231, z: 523.44006}
   m_LocalScale: {x: 3, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 678293263}
-  m_Father: {fileID: 1573222665}
+  m_Father: {fileID: 141550431}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1497016807
 MonoBehaviour:
@@ -2043,7 +2145,7 @@ MonoBehaviour:
   onInteract:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1269722322}
+      - m_Target: {fileID: 141550433}
         m_TargetAssemblyTypeName: StepByStepPopup, Assembly-CSharp
         m_MethodName: Play
         m_Mode: 1
@@ -2252,7 +2354,6 @@ Transform:
   m_Children:
   - {fileID: 1757115562}
   - {fileID: 1274266175}
-  - {fileID: 1497016806}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1757115561
@@ -3296,7 +3397,10 @@ SceneRoots:
   m_Roots:
   - {fileID: 768648292}
   - {fileID: 447258897}
+  - {fileID: 564944145}
   - {fileID: 1269722318}
   - {fileID: 1531950907}
   - {fileID: 1573222665}
   - {fileID: 7600700001}
+  - {fileID: 1216733330}
+  - {fileID: 141550431}

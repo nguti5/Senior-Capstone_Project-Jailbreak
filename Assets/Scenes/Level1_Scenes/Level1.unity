@@ -8773,7 +8773,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 704114292}
-  - {fileID: 1826205038}
   - {fileID: 1443302892}
   - {fileID: 2011826759}
   - {fileID: 1145845056}
@@ -13839,13 +13838,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 820210156}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.4, y: 0.79, z: -6.81}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 235.7684, y: 454.1131, z: -63.36991}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1290948255}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1587570248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &820210160
 BoxCollider:
@@ -34963,6 +34962,39 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: a60140d8f404d6b4982b90bfdc858298, type: 3}
   m_PrefabInstance: {fileID: 1573923427}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1587570247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1587570248}
+  m_Layer: 0
+  m_Name: Interactables
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1587570248
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1587570247}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -228.36841, y: -453.3231, z: 56.55991}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 820210159}
+  - {fileID: 1826205038}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1588008151
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37119,7 +37151,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 485269898}
+    m_TransformParent: {fileID: 1587570248}
     m_Modifications:
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalScale.x
@@ -37135,15 +37167,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 235.7198
       objectReference: {fileID: 0}
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.18
+      value: 454.25308
       objectReference: {fileID: 0}
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 11.01
+      value: -41.04991
       objectReference: {fileID: 0}
     - target: {fileID: 2498504952586042402, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -48051,7 +48083,7 @@ MonoBehaviour:
     completeOnItemId: 
   - id: l1_investigate_ceiling
     description: Investigate the noise in the ceiling.
-    completeOnItemId: PortalRoom_Key
+    completeOnItemId: PortalRoom_key
   - id: l1_open_door
     description: Unlock door
     completeOnItemId: 
@@ -48059,7 +48091,7 @@ MonoBehaviour:
   panelRect: {fileID: 7600800002}
   toggleKey: 29
   padding: 24
-  finishDelay: 1.5
+  finishDelay: 1
   hidePanelWhenDone: 1
   onAllComplete:
     m_PersistentCalls:
@@ -48179,5 +48211,5 @@ SceneRoots:
   - {fileID: 204488656}
   - {fileID: 347524538}
   - {fileID: 485269898}
-  - {fileID: 820210159}
   - {fileID: 7600700001}
+  - {fileID: 1587570248}

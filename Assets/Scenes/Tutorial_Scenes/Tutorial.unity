@@ -892,7 +892,7 @@ MonoBehaviour:
   panelRect: {fileID: 1365348735}
   toggleKey: 29
   padding: 24
-  finishDelay: 1.5
+  finishDelay: 1
   hidePanelWhenDone: 1
   onAllComplete:
     m_PersistentCalls:

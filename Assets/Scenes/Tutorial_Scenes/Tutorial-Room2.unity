@@ -539,12 +539,12 @@ MonoBehaviour:
   panelRect: {fileID: 971164719}
   toggleKey: 29
   padding: 24
-  finishDelay: 1.5
+  finishDelay: 1
   hidePanelWhenDone: 1
   onAllComplete:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 974295837}
         m_TargetAssemblyTypeName: BattleEncounter, Assembly-CSharp
         m_MethodName: StartBattle
         m_Mode: 1
@@ -3598,7 +3598,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8505471658915778471, guid: 61e768b9256fe684f85461639c34b603, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
