@@ -419,7 +419,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: t1_go_through_door
+          m_StringArgument: t1_unlock_door
           m_BoolArgument: 0
         m_CallState: 2
   onLockedAttempt:
@@ -841,14 +841,15 @@ MonoBehaviour:
   popupPanel: {fileID: 2083901267}
   popupText: {fileID: 1203472322}
   steps:
-  - "Welcome, agent. Something nasty is loose in Grandma\u2019s computer, and you\u2019re our best shot."
+  - "Welcome, agent. Something nasty is loose in Grandma Mary's computer, and you\u2019re our best shot."
   - <b>Mouse</b> = look around. Stay sharp. (Yes, the cats are watching.)
   - <b>Arrow keys</b> or <b>WASD</b> = move. Try not to knock anything off the desktop.
-  - <b>Esc</b> = pause menu. The documentation tab has hints/clues needed during the levels.
-  - <b>I</b> = inventory. Save things that look useful.
-  - <b>E</b> = open doors and interact. Some are locked and need a key, so keep an eye out for shiny things.
-  - <b>O</b> = minimize or maximize objective menu. Minimize to keep your vision clear.
-  tutorialId: 
+  - <b>E</b> = interact. Open doors, read notes, grab items. Anything that glows can be used, and some doors need a key.
+  - <b>O</b> = minimize or maximize your objective list. Shrink it to keep your view clear.
+  - <b>I</b> = inventory. Everything you pick up lands here.
+  - '<b>H</b> = hint, <b>C</b> = clue about the threat, <b>Tab</b> = open the Assistant. Stuck? Just ask. '
+  - <b>Esc</b> = pause menu. The Documentation tab explains every threat you meet.
+  tutorialId: tutorial
   playOnStart: 1
   onlyOnce: 1
   freezeWhilePlaying: []
@@ -885,8 +886,8 @@ MonoBehaviour:
   - id: t1_get_key
     description: Find the key to enter door.
     completeOnItemId: tutorial_key
-  - id: t1_go_through_door
-    description: Go through the door.
+  - id: t1_unlock_door
+    description: Unlock door.
     completeOnItemId: 
   showUpcoming: 1
   panelRect: {fileID: 1365348735}
@@ -3191,8 +3192,8 @@ GameObject:
   - component: {fileID: 1750885671}
   - component: {fileID: 1750885670}
   - component: {fileID: 1750885669}
-  - component: {fileID: 1750885673}
   - component: {fileID: 1750885674}
+  - component: {fileID: 1750885675}
   m_Layer: 0
   m_Name: TutorialKey
   m_TagString: Untagged
@@ -3294,18 +3295,6 @@ Transform:
   - {fileID: 1268359084}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1750885673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1750885668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de264c8089cc60446a4637648a8d4b7f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TutorialKeyPickup
 --- !u!114 &1750885674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3322,6 +3311,19 @@ MonoBehaviour:
   glowColor: {r: 0, g: 1, b: 1, a: 1}
   glowIntensity: 2
   promptText: PICK UP KEY
+--- !u!114 &1750885675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1750885668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07cd67ac271dd17499505781bb55a4f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemPickup
+  itemId: tutorial_key
 --- !u!1 &1927391631
 GameObject:
   m_ObjectHideFlags: 0
@@ -3686,15 +3688,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4219475746899953711, guid: 2413f366b6c6eff4baa16bffa022ae64, type: 3}
       propertyPath: m_Pivot.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4219475746899953711, guid: 2413f366b6c6eff4baa16bffa022ae64, type: 3}
       propertyPath: m_Pivot.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4219475746899953711, guid: 2413f366b6c6eff4baa16bffa022ae64, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4219475746899953711, guid: 2413f366b6c6eff4baa16bffa022ae64, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3706,15 +3708,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4219475746899953711, guid: 2413f366b6c6eff4baa16bffa022ae64, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4219475746899953711, guid: 2413f366b6c6eff4baa16bffa022ae64, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 1920
       objectReference: {fileID: 0}
     - target: {fileID: 4219475746899953711, guid: 2413f366b6c6eff4baa16bffa022ae64, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 4219475746899953711, guid: 2413f366b6c6eff4baa16bffa022ae64, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3746,11 +3748,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4219475746899953711, guid: 2413f366b6c6eff4baa16bffa022ae64, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -657
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4219475746899953711, guid: 2413f366b6c6eff4baa16bffa022ae64, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 152
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 4219475746899953711, guid: 2413f366b6c6eff4baa16bffa022ae64, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

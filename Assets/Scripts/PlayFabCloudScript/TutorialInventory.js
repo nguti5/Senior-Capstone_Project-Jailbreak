@@ -345,12 +345,6 @@ function validSlot(args) {
     return (slot === "0" || slot === "1" || slot === "2") ? slot : null;
 }
 
-handlers.claimTutorialKey = function (args, context) {
-    args = args || {};
-    args.itemId = "tutorial_key";
-    return handlers.claimItem(args, context);
-};
-
 handlers.clearSlotInventory = function (args, context) {
     var playerId = currentPlayerId;
     var slot = validSlot(args);
@@ -369,7 +363,7 @@ handlers.clearSlotInventory = function (args, context) {
 };
 
 // only these items can be claimed from the game client
-var CLAIMABLE_ITEMS = ["tutorial_key", "mailroom_key"];
+var CLAIMABLE_ITEMS = ["tutorial_key", "mailroom_key", "PortalRoom_key"];
 
 handlers.claimItem = function (args, context) {
     var playerId = currentPlayerId;
