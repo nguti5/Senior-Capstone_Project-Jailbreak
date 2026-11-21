@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(InteractableGlow))]
 public class MailPileInteraction : MonoBehaviour, IInteractible
@@ -32,6 +33,8 @@ public class MailPileInteraction : MonoBehaviour, IInteractible
 
     [Header("Objective")]
     [SerializeField] private string objectiveId = "l1_destroy_scam";
+
+    [SerializeField] private UnityEvent onScamDestroyed;
 
     private int current;
     private bool solved;
@@ -125,6 +128,7 @@ public class MailPileInteraction : MonoBehaviour, IInteractible
 
         Close();
         busy = false;
+        onScamDestroyed?.Invoke();
     }
 
     private IEnumerator WrongPick()

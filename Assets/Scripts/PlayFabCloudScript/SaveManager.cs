@@ -73,4 +73,20 @@ public static class SaveManager
                 Debug.LogWarning("Couldn't save progress.");
         });
     }
+
+    public static void ClearProgress(string[] prefixes)
+    {
+        SlotData s = Current;
+        if (s == null || s.completed == null || prefixes == null) return;
+
+        int removed = s.completed.RemoveAll(id =>
+        {
+            foreach (string p in prefixes)
+                if (!string.IsNullOrEmpty(p) && id.StartsWith(p)) return true;
+            return false;
+        });
+
+        Debug.Log("Cleared " + removed + " progress entries.");
+        SaveCurrent();
+    }
 }

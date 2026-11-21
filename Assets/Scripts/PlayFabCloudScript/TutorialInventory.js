@@ -403,3 +403,22 @@ handlers.claimItem = function (args, context) {
 
     return { success: true, alreadyClaimed: false, message: itemId + " granted for slot " + slot + "." };
 };
+
+handlers.revokeItems = function (args, context) {
+    var playerId = currentPlayerId;
+    var slot = validSlot(args);
+    var ids = (args && args.itemIds) ? args.itemIds : [];
+
+    if (slot === null) return { success: false, removed: 0 };
+
+    var inv = server.GetUserInventory({ PlayFabId: playerId });
+    var removed = 0;
+    for (var i = 0; i < inv.Inventory.length; i++) {
+        var it = inv.Inventory[i];
+        if (ids.indexOf(it.ItemId) !== -1 && it.CustomData && it.CustomData.slot === slot) {
+            server.RevokeInventoryItem({ PlayFabId: playerId, ItemInstanceId: it.ItemInstanceId });
+            removed++;
+        }
+    }
+    return { success: true, removed: removed };
+};

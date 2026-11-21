@@ -107,7 +107,7 @@ public class LegacyCatalogManager : MonoBehaviour
     }
 
     [Serializable] private class ItemCustomData { public string slot; }
-    [Serializable] private class SlotArgs { public int slot; public string itemId; } 
+    [Serializable] private class SlotArgs { public int slot; public string itemId; public string[] itemIds; } 
     [Serializable]
     private class CloudScriptRequest
     {
@@ -197,6 +197,36 @@ public class LegacyCatalogManager : MonoBehaviour
                 Debug.LogError("PlayFab did not confirm the claim of " + itemId);
                 onComplete?.Invoke(false);
             }
+        }
+    }
+
+    public void RevokeItems(string[] itemIds, Action<bool> onComplete)
+    {
+        if (string.IsNullOrEmpty(sessionTicket)) { onComplete?.Invoke(false); return; }
+        StartCoroutine(RevokeItemsRequest(itemIds, onComplete));
+    }
+
+    private IEnumerator RevokeItemsRequest(string[] itemIds, Action<bool> onComplete)
+    {
+        string url = $"https://{TitleId}.playfabapi.com/Client/ExecuteCloudScript";
+
+        var body = new CloudScriptRequest
+        {
+            FunctionName = "revokeItems",
+            GeneratePlayStreamEvent = false,
+            FunctionParameter = new SlotArgs { slot = SaveManager.CurrentSlot, itemIds = itemIds }
+        };
+
+        using (UnityWebRequest request = CreatePostRequest(url, JsonUtility.ToJson(body)))
+        {
+            request.SetRequestHeader("X-Authorization", sessionTicket);
+            yield return request.SendWebRequest();
+
+            bool ok = request.result == UnityWebRequest.Result.Success;
+            if (!ok) Debug.LogError("Revoke items failed: " + request.downloadHandler.text);
+            else yield return StartCoroutine(LoadInventory(sessionTicket));   // refresh the local copy
+
+            onComplete?.Invoke(ok);
         }
     }
 
