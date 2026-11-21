@@ -27,9 +27,9 @@ MonoBehaviour:
   knownAttacks:
   - attack: {fileID: 11400000, guid: 3f07db5f57b05b3479d82fa7bdd17b28, type: 2}
     level: 1
-  - attack: {fileID: 11400000, guid: 1c2980728fac01f40ba5bdc48281f065, type: 2}
+  - attack: {fileID: 11400000, guid: 717506754df58b740a3a90e0c898ccfc, type: 2}
     level: 1
-  - attack: {fileID: 11400000, guid: 751f9b94246010e40b3b0da1194d4814, type: 2}
+  - attack: {fileID: 11400000, guid: 40767ddd9965eed4ea4fd67f8b74fcfa, type: 2}
     level: 1
-  - attack: {fileID: 11400000, guid: e37d94a25d098ff4f8ca3481669eafb6, type: 2}
+  - attack: {fileID: 11400000, guid: 8aaa4ac0f8ca9b843975f10ba1c8e661, type: 2}
     level: 1

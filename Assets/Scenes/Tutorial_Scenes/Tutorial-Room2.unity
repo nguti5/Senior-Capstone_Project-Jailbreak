@@ -3697,7 +3697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleEncounter
   enemyCreature: {fileID: 11400000, guid: 2244ff1a3124d8b4ab392f67f35fb96b, type: 2}
-  enemyLevel: 5
+  enemyLevel: 10
   oneTimeOnly: 0
   canFlee: 0
   onPlayerWon:
