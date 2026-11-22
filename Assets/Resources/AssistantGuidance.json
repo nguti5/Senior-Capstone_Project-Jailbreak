@@ -187,6 +187,20 @@
       "scene": "BossBattle-Level1",
       "threatId": "phishing",
       "briefing": "Review the phishing investigation in Esc → Documentation."
+    },
+    {
+      "scene": "Hallway-Level1",
+      "threatId": "phishing",
+      "briefing": "Follow the hallway to find the final boss and clear Level 1.",
+      "hints": [
+        "Keep going to the far end of the hallway.",
+        "Approach the boss and interact when the TALK TO BOSS prompt appears.",
+        "Finish the conversation to start the fight. Defeat the boss to clear Level 1."
+      ],
+      "clues": [
+        "The hallway leads to the final encounter. Look for the figure at the far end.",
+        "The TALK TO BOSS prompt marks the encounter. The fight begins after the conversation."
+      ]
     }
   ]
 }
