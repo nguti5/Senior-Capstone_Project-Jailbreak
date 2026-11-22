@@ -23,6 +23,7 @@ public class BattleEncounter : MonoBehaviour
 
     public void StartBattle()
     {
+        Debug.Log($"StartBattle called | oneTimeOnly={oneTimeOnly} defeated={defeated} InBattle={BattleTransition.InBattle}");
         if (oneTimeOnly && defeated)
             return;
 
@@ -66,15 +67,18 @@ public class BattleEncounter : MonoBehaviour
         switch (result)
         {
             case BattleResult.Won:
+                Debug.Log("Player won the battle.");
                 defeated = true;
                 onPlayerWon?.Invoke();
                 break;
 
             case BattleResult.Lost:
+                Debug.Log("Player lost the battle.");
                 onPlayerLost?.Invoke();
                 break;
 
             case BattleResult.Fled:
+                Debug.Log("Player fled the battle.");
                 onPlayerFled?.Invoke();
                 break;
         }

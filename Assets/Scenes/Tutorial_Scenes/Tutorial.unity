@@ -900,6 +900,7 @@ MonoBehaviour:
   - "Welcome, agent. Something nasty is loose in Grandma Mary's computer, and you\u2019re our best shot."
   - <b>Mouse</b> = look around. Stay sharp. (Yes, the cats are watching.)
   - <b>Arrow keys</b> or <b>WASD</b> = move. Try not to knock anything off the desktop.
+  - <b>Shift</b> when moving = sprint. For when a threat is urgent.
   - <b>E</b> = interact. Open doors, read notes, grab items. Anything that glows can be used, and some doors need a key.
   - <b>O</b> = minimize or maximize your objective list. Shrink it to keep your view clear.
   - <b>I</b> = inventory. Everything you pick up lands here.

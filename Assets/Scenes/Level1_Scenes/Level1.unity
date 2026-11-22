@@ -5034,6 +5034,18 @@ MonoBehaviour:
           m_StringArgument: l1_explore_mural
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1826205039}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: l1_explore_mural
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1001 &199832681
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37211,7 +37223,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3019568617730713240, guid: 5dd5a1ab6047d4848b7668734815016f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

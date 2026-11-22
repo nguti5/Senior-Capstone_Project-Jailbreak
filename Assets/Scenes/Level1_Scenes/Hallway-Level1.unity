@@ -300,18 +300,6 @@ MonoBehaviour:
           m_StringArgument: l1h_find_enemy
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 141550432}
-        m_TargetAssemblyTypeName: BattleEncounter, Assembly-CSharp
-        m_MethodName: StartBattle
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!43 &339653629
 Mesh:
   m_ObjectHideFlags: 0
@@ -1377,7 +1365,19 @@ MonoBehaviour:
   hidePanelWhenDone: 1
   onAllComplete:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 141550432}
+        m_TargetAssemblyTypeName: BattleEncounter, Assembly-CSharp
+        m_MethodName: StartBattle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   beginOnStart: 1
 --- !u!114 &1269722321
 MonoBehaviour:
