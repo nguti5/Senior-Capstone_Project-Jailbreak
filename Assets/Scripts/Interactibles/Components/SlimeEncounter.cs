@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 public sealed class SlimeEncounter : MonoBehaviour, IInteractible
@@ -6,15 +5,14 @@ public sealed class SlimeEncounter : MonoBehaviour, IInteractible
     [SerializeField, Min(0.1f)] private float wanderRadius = 2.5f;
     [SerializeField, Min(0.1f)] private float moveSpeed = 0.6f;
 
-    private static readonly Vector3 ClearanceCenter = new Vector3(0f, 0.24f, 0f);
-    private static readonly Vector3 ClearanceHalfSize = new Vector3(0.41f, 0.20f, 0.41f);
+    // Keep the sweep above floor seams while checking the width of the slime body.
+    private static readonly Vector3 ClearanceCenter = new Vector3(0f, 0.29f, 0f);
+    private static readonly Vector3 ClearanceHalfSize = new Vector3(0.39f, 0.17f, 0.39f);
 
     private Vector3 spawnPosition;
     private Quaternion spawnRotation;
     private Vector3 destination;
     private float waitUntil;
-
-    private bool battleStarting;
 
     private void Awake()
     {
@@ -25,8 +23,7 @@ public sealed class SlimeEncounter : MonoBehaviour, IInteractible
 
     private void Update()
     {
-        if (battleStarting ||
-            BattleTransition.InBattle ||
+        if (BattleTransition.InBattle ||
             Time.timeScale == 0f ||
             Time.time < waitUntil)
             return;
@@ -82,44 +79,27 @@ public sealed class SlimeEncounter : MonoBehaviour, IInteractible
 
     public void Interact(GameObject interactor)
     {
-        if (!isActiveAndEnabled ||
-            battleStarting ||
-            BattleTransition.InBattle ||
-            Time.timeScale == 0f)
+        if (!isActiveAndEnabled || BattleTransition.InBattle || Time.timeScale == 0f)
             return;
 
-        SceneTransitionManager manager =
-            SceneTransitionManager.Instance;
-
-        if (manager != null)
+        SceneTransitionManager manager = SceneTransitionManager.Instance;
+        if (manager != null && manager.isActiveAndEnabled)
         {
-            if (manager.IsTransitioning)
-                return;
-
-            battleStarting = true;
-
+            // The manager rejects additional requests while its transition is running.
             manager.BeginBattleTransition(StartSlimeBattle);
+            return;
         }
-        else
-        {
-            Debug.LogWarning(
-                "SceneTransitionManager not found. Starting battle normally."
-            );
 
-            StartSlimeBattle();
-        }
+        StartSlimeBattle();
     }
 
     private void StartSlimeBattle()
     {
-        battleStarting = false;
+        if (this == null || !isActiveAndEnabled)
+            return;
 
         // Use the enemy configured in BattleScene1.
-        BattleTransition.StartBattle(
-            null,
-            0,
-            OnBattleEnded
-        );
+        BattleTransition.StartBattle(null, 0, OnBattleEnded);
     }
 
     private void OnBattleEnded(BattleResult result)

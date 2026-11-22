@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -28,22 +27,7 @@ public class PlayerInteractor : MonoBehaviour
 
     private void Update()
     {
-        Ray ray = new Ray(playerCamera.position, playerCamera.forward);
-
-        InteractableGlow newGlow = null;
-        IInteractible newInteractible = null;
-
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, interactionDistance))
-        {
-            newInteractible =
-                hitInfo.collider.GetComponentInParent<IInteractible>();
-
-            if (newInteractible != null)
-            {
-                newGlow =
-                    hitInfo.collider.GetComponentInParent<InteractableGlow>();
-            }
-        }
+        IInteractible newInteractible = FindInteractible(out InteractableGlow newGlow);
 
         if (newGlow != currentGlow ||
             !ReferenceEquals(newInteractible, currentInteractible))
@@ -79,35 +63,48 @@ public class PlayerInteractor : MonoBehaviour
             interactionPrompt.HidePrompt();
     }
 
+    private IInteractible FindInteractible(out InteractableGlow glow)
+    {
+        glow = null;
+        Ray ray = new Ray(playerCamera.position, playerCamera.forward);
+
+        if (!Physics.Raycast(ray, out RaycastHit hit, interactionDistance,
+            Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
+            return null;
+
+        Collider target = hit.collider;
+        IInteractible interactible = target.GetComponentInParent<IInteractible>();
+
+        if (interactible == null && target.isTrigger)
+        {
+            // Trigger volumes without an interaction can overlap the slime's trigger.
+            // Choose the nearest interactible or solid surface so walls still block the ray.
+            float nearestDistance = float.PositiveInfinity;
+            foreach (RaycastHit candidate in Physics.RaycastAll(ray, interactionDistance,
+                Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
+            {
+                if (candidate.distance >= nearestDistance)
+                    continue;
+
+                IInteractible candidateInteractible =
+                    candidate.collider.GetComponentInParent<IInteractible>();
+                if (candidate.collider.isTrigger && candidateInteractible == null)
+                    continue;
+
+                target = candidate.collider;
+                interactible = candidateInteractible;
+                nearestDistance = candidate.distance;
+            }
+        }
+
+        if (interactible != null)
+            glow = target.GetComponentInParent<InteractableGlow>();
+
+        return interactible;
+    }
 
     private void PlayerInteracted(InputAction.CallbackContext context)
     {
-        Debug.Log("E KEY PRESSED");
-
-        Ray ray = new Ray(playerCamera.position, playerCamera.forward);
-
-        if (Physics.Raycast(ray, out RaycastHit hitInfo, interactionDistance))
-        {
-            Debug.Log("Raycast hit: " + hitInfo.collider.gameObject.name);
-
-            IInteractible interactible =
-                hitInfo.collider.GetComponentInParent<IInteractible>();
-
-            if (interactible != null)
-            {
-                Debug.Log("Interactable found!");
-                interactible.Interact(gameObject);
-            }
-            else
-            {
-                Debug.Log("No interactable found on this object.");
-            }
-        }
-        else
-        {
-            Debug.Log("Raycast hit nothing.");
-        }
+        FindInteractible(out _)?.Interact(gameObject);
     }
-
-
 }
