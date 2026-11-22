@@ -14,19 +14,19 @@ public class HealthBar : MonoBehaviour
         healthBar.transform.localScale = new Vector3(normalizedValue, 1, 1);
     }
 
-    //changes size of healthbar when recieving damage.
-    public IEnumerator SetSmoothHP(float normalizedValue)
+    //changes size of healthbar when health value changes (healing or damage).
+    public IEnumerator SetSmoothHP(float target)
     {
-        float currentScale = healthBar.transform.localScale.x;
-        float updateQuantity = currentScale - normalizedValue;
+        float current = healthBar.transform.localScale.x;
+        float speed = Mathf.Abs(target - current);
 
-        while(currentScale - normalizedValue > Mathf.Epsilon)
+        while(!Mathf.Approximately(current, target))
         {
-            currentScale -= updateQuantity * Time.deltaTime;
-            healthBar.transform.localScale = new Vector3(currentScale, 1, 1);
+            current = Mathf.MoveTowards(current, target, speed * Time.deltaTime);
+            healthBar.transform.localScale = new Vector3(current, 1, 1);
             yield return null;
         }
 
-        healthBar.transform.localScale = new Vector3(normalizedValue, 1, 1);
+        healthBar.transform.localScale = new Vector3(target, 1, 1);
     }
 }

@@ -21,7 +21,12 @@ public class BattleDialogueBox : MonoBehaviour
     [SerializeField] private BattleUnit playerUnit;
     [SerializeField] private Image typeImage;
     [SerializeField] private List<TypeIcon> typeIcons;
+    [SerializeField] private GameObject itemSelect;
+    [SerializeField] private List<Text> itemTexts;
+    [SerializeField] private List<GameObject> itemButtons;
+
     [Serializable] public struct TypeIcon
+
     {
         public CreatureType type;
         public Sprite sprite;
@@ -84,6 +89,11 @@ public class BattleDialogueBox : MonoBehaviour
         attackDescription.SetActive(activated);
     }
 
+    public void ToggleItems(bool activated)
+    {
+        itemSelect.SetActive(activated);
+    }
+
     //function to set the names for the attack buttons.
     public void SetCreatureAttacks(List<Attack> attacks)
     {
@@ -133,5 +143,19 @@ public class BattleDialogueBox : MonoBehaviour
         typeImage.enabled = false;
         mpText.text = "";
         typeText.text = "";
+    }
+
+    public void SetItems(List<BattleItemEntry> items)
+    {
+        for(int i = 0; i < itemTexts.Count; i++)
+        {
+            bool hasItem = i < items.Count;
+            itemButtons[i].SetActive(hasItem);
+
+            if (hasItem)
+            {
+                itemTexts[i].text = $"{items[i].Item.DisplayName} x {items[i].Count}";
+            }
+        }
     }
 }

@@ -5,6 +5,8 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections.Generic;
+using Unity.Collections.Tests.CoreCLR.TestJobs;
+using System.Runtime.CompilerServices;
 
 public class LegacyCatalogManager : MonoBehaviour
 {
@@ -640,4 +642,66 @@ public class LegacyCatalogManager : MonoBehaviour
         }
     }
 
+
+//Connor Additions========================================================================================================
+    [Serializable] private class ConsumeRequest { public string ItemInstanceId; public int ConsumeCount; }
+
+    public int GetItemCount(string itemId)
+    {
+        //how many of the item the save slot currently has. 
+        int count = 0;
+        string slot = SaveManager.CurrentSlot.ToString();
+        foreach(InventoryItem item in ownedItems)
+        {
+            if(item.ItemId == itemId && item.CustomData != null && item.CustomData.slot == slot)
+            {
+                count += item.RemainingUses > 0 ? item.RemainingUses : 1;
+            }
+        }
+        return count;
+    }
+
+    public void ConsumeItem(string itemId, Action<bool> onComplete)
+    {
+        //Find this slot's copy of the item.
+        InventoryItem instance = null;
+        string slot = SaveManager.CurrentSlot.ToString();
+        foreach (InventoryItem item in ownedItems)
+        {
+            if(item.ItemId == itemId && item.CustomData != null && item.CustomData.slot == slot)
+            {
+                instance = item;
+                break;
+            }
+        }
+
+        if (instance == null)
+        {
+            Debug.LogWarning("ConsumeItem: no" + itemId + "in this slot's Inventory");
+            onComplete?.Invoke(false);
+            return;
+        }
+
+        StartCoroutine(ConsumeItemRequest(instance.ItemInstanceId, onComplete));
+    }
+
+    private IEnumerator ConsumeItemRequest(string instanceId, Action<bool> onComplete)
+    {
+        string url = $"https://{TitleId}.playfabapi.com/Client/ConsumeItem";
+        var body = new ConsumeRequest {ItemInstanceId = instanceId, ConsumeCount = 1};
+
+        using(UnityWebRequest request = CreatePostRequest(url, JsonUtility.ToJson(body)))
+        {
+            request.SetRequestHeader("X-Authorization", sessionTicket);
+            yield return request.SendWebRequest();
+
+            bool ok = request.result == UnityWebRequest.Result.Success;
+            if (!ok) Debug.LogError("Consume item failed: " + request.downloadHandler.text);
+            else yield return StartCoroutine(LoadInventory(sessionTicket));
+
+            onComplete?.Invoke(ok);
+        }
+    }
 }
+
+

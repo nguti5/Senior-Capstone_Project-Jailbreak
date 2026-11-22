@@ -18,7 +18,9 @@ public class BattleManager : MonoBehaviour
     [SerializeField] int defendRestoreCount = 2;
     [SerializeField] int defendRestoreAmount = 2;
     [SerializeField] float fleeChance = 0.5f;
+    [SerializeField] List<ItemBase> battleItems;
 
+    private List<BattleItemEntry> currentItems = new List<BattleItemEntry>();
 
     private void Start()
     {
@@ -28,6 +30,7 @@ public class BattleManager : MonoBehaviour
     public void BacktoActions() //small x button to return to action select.
     {
         battleDialogueBox.ToggleAttacks(false);
+        battleDialogueBox.ToggleItems(false);
         battleDialogueBox.ToggleActions(true);
     }
 
@@ -36,6 +39,7 @@ public class BattleManager : MonoBehaviour
     {
         battleDialogueBox.ToggleActions(false);
         battleDialogueBox.ToggleAttacks(false);
+        battleDialogueBox.ToggleItems(false);
         battleDialogueBox.ToggleDialogueText(true);
         
         
@@ -73,6 +77,7 @@ public class BattleManager : MonoBehaviour
     {
         battleDialogueBox.ToggleActions(false);
         battleDialogueBox.ToggleAttacks(false);
+        battleDialogueBox.ToggleItems(false);
         battleDialogueBox.ToggleDialogueText(true);
         
         
@@ -112,7 +117,10 @@ public class BattleManager : MonoBehaviour
         StartCoroutine(PlayerActionCoroutine());
     }
 
-
+    public void PlayerItem()
+    {
+        StartCoroutine(PlayerItemCoroutine());
+    }
     public void PlayerAttack()
     {
         StartCoroutine(PlayerAttackCoroutine());
@@ -131,6 +139,7 @@ public class BattleManager : MonoBehaviour
     IEnumerator PlayerActionCoroutine()
     {
         battleDialogueBox.ToggleAttacks(false);   
+        battleDialogueBox.ToggleItems(false);  
         StartCoroutine(battleDialogueBox.SetDialogueText("Select Action"));
         yield return new WaitForSeconds(1.5f);
         battleDialogueBox.ToggleDialogueText(false);   
@@ -267,6 +276,85 @@ public class BattleManager : MonoBehaviour
             yield return battleDialogueBox.SetDialogueText("It's not Effective...");
         }
     }
+
+    IEnumerator PlayerItemCoroutine()
+    {
+        battleDialogueBox.ToggleActions(false);
+        currentItems = GetUsableItems();
+
+        if (currentItems.Count == 0)
+        {
+            battleDialogueBox.ToggleDialogueText(true);
+            yield return battleDialogueBox.SetDialogueText("You Don't Have any Items.");
+            StartCoroutine(PlayerActionCoroutine());
+            yield break;
+        }
+
+        battleDialogueBox.ToggleDialogueText(false);
+        battleDialogueBox.SetItems(currentItems);
+        yield return new WaitForSeconds(0.2f);
+        battleDialogueBox.ToggleItems(true);
+    }
+
+    private List<BattleItemEntry> GetUsableItems()
+    {
+        var list = new List<BattleItemEntry>();
+        var catalog = LegacyCatalogManager.Instance;
+        if(catalog == null || !catalog.IsInventoryLoaded) return list;
+
+        foreach(var item in battleItems)
+        {
+            int count = catalog.GetItemCount(item.ItemId);
+            if(count > 0) list.Add(new BattleItemEntry(item,count));
+            if(list.Count == 4) break;
+        }
+        return list;
+    }
+
+    public void itemButtonPressed(int index)
+    {
+        if (index < 0 || index >= currentItems.Count) return;
+        StartCoroutine(UseItem(currentItems[index].Item));
+    }
+
+    IEnumerator UseItem(ItemBase item)
+    {
+        battleDialogueBox.ToggleItems(false);
+        battleDialogueBox.ToggleDialogueText(true);
+
+        var creature = playerUnit.Creature;
+        if(creature.HP >= creature.MaxHP)
+        {
+            yield return battleDialogueBox.SetDialogueText("HP is already full!");
+            StartCoroutine(PlayerActionCoroutine());
+            yield break;
+        }
+
+        yield return battleDialogueBox.SetDialogueText($"You used {item.DisplayName}!");
+    
+        bool? consumed = null;
+        LegacyCatalogManager.Instance.ConsumeItem(item.ItemId, ok => consumed = ok);
+        yield return new WaitUntil(() => consumed.HasValue);
+
+        if(consumed == false)
+        {
+            yield return battleDialogueBox.SetDialogueText("But it failed...");
+            StartCoroutine(PlayerActionCoroutine());
+            yield break;
+        }
+
+        int oldHP = creature.HP;
+        int healed = creature.Heal(item.HealAmount);
+        playerHud.UpdateCreatureData(oldHP);
+
+        yield return battleDialogueBox.SetDialogueText($"{creature.Base.CreatureName} recovered {healed} HP!");
+        yield return new WaitForSeconds(1.0f);
+        StartCoroutine(EnemyAction());
+    
+    
+    }
+
+
 }
 
 
