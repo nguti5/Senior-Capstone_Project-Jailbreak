@@ -23,6 +23,7 @@ public static class BattleTransition
 
     public static void StartBattle(CreatureBase enemy, int level, Action<BattleResult> onEnded = null, bool canFlee = true)
     {
+        Debug.Log($"[Transition] StartBattle called, InBattle={InBattle}");
         if (InBattle) return; 
 
         if (!Application.CanStreamedLevelBeLoaded(BattleSceneName))
@@ -87,4 +88,17 @@ public static class BattleTransition
             callback?.Invoke(result);
         };
     }
+    
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        InBattle = false;
+        EnemyBase = null;
+        EnemyLevel = 0;
+        CanFlee = true;
+        onBattleEnded = null;
+        hiddenObjects.Clear();
+    }
+
 }
+
