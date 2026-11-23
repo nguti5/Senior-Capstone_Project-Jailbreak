@@ -1,7 +1,7 @@
 using UnityEngine.Events;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 public class PhishingButtonInteraction : MonoBehaviour, IInteractible
 {
@@ -17,8 +17,7 @@ public class PhishingButtonInteraction : MonoBehaviour, IInteractible
     [SerializeField] private int flashCount = 8;
     [SerializeField] private UnityEvent onPressed; 
 
-    [Header("Scene Transition")]
-    [SerializeField] private string battleSceneName = "BattleScene1";
+
 
     private Vector3 originalPosition;
     private bool isAnimating;
@@ -95,18 +94,12 @@ private IEnumerator FlashWarningLights()
 
     // Turn off both warning lights
     SetLights(false, false);
+    isFlashing = false;
 
     Debug.Log("Warning sequence complete. Loading phishing battle...");
 
-    // Trigger the event added by your teammate
+    // BattleEncounter -> BattleTransition loads the battle and brings you back afterwards
     onPressed?.Invoke();
-
-    // Restore cursor state
-    Cursor.lockState = CursorLockMode.Locked;
-    Cursor.visible = false;
-
-    // Load the losing battle scene
-    SceneManager.LoadScene(battleSceneName);
 }
 
 

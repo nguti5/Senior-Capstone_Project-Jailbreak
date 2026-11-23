@@ -25,7 +25,5 @@ MonoBehaviour:
   spDefense: 50
   speed: 50
   knownAttacks:
-  - attack: {fileID: 11400000, guid: 3f07db5f57b05b3479d82fa7bdd17b28, type: 2}
+  - attack: {fileID: 11400000, guid: 1c2980728fac01f40ba5bdc48281f065, type: 2}
     level: 1
-  - attack: {fileID: 11400000, guid: 346369ee73a8585468ccac6c94edd1c0, type: 2}
-    level: 2

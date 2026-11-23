@@ -118,6 +118,13 @@ public class Creature
         return restored;
     }
 
+    public int Heal(int amount)
+    {
+        int before = HP;
+        HP = Mathf.Min(HP + amount, MaxHP);
+        return HP - before;
+    }
+
 }
 
 public class DamageDescription

@@ -28,22 +28,21 @@ public class BattleHud : MonoBehaviour
 
     public void UpdateCreatureData(int oldHPValue)
     {
-        StartCoroutine(healthBar.SetSmoothHP((float)_creature.HP/_creature.MaxHP));
-        StartCoroutine(DecreaseHealthPoints(oldHPValue));
+        StartCoroutine(healthBar.SetSmoothHP((float)_creature.HP / _creature.MaxHP));
+        StartCoroutine(AnimateHealthText(oldHPValue));
     }
 
-    //function to decrease HP over time.
-
-    IEnumerator DecreaseHealthPoints(int oldHPValue)
+    IEnumerator AnimateHealthText(int shownHP)
     {
-        while(oldHPValue > _creature.HP)
+        while (shownHP != _creature.HP)
         {
-            oldHPValue--;
-            creatureHealth.text = $"{oldHPValue}/{_creature.MaxHP}";
+            shownHP += shownHP < _creature.HP ? 1 : -1;   // count up for heals, down for damage
+            creatureHealth.text = $"{shownHP}/{_creature.MaxHP}";
             yield return new WaitForSeconds(0.05f);
-
         }
 
         creatureHealth.text = $"{_creature.HP}/{_creature.MaxHP}";
     }
+
+ 
 }

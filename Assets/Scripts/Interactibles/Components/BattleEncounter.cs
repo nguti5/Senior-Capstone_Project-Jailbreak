@@ -23,6 +23,9 @@ public class BattleEncounter : MonoBehaviour
 
     public void StartBattle()
     {
+        Debug.Log($"[Encounter] StartBattle on '{name}' in scene '{gameObject.scene.name}' (defeated={defeated})");
+        if(oneTimeOnly && defeated) return;
+        BattleTransition.StartBattle(enemyCreature, enemyLevel, OnBattleFinished, canFlee);
         Debug.Log($"StartBattle called | oneTimeOnly={oneTimeOnly} defeated={defeated} InBattle={BattleTransition.InBattle}");
         if (oneTimeOnly && defeated)
             return;
