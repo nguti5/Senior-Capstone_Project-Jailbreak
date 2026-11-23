@@ -3696,9 +3696,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleEncounter
   enemyCreature: {fileID: 11400000, guid: 2244ff1a3124d8b4ab392f67f35fb96b, type: 2}
-  enemyLevel: 50
+  enemyLevel: 1
   oneTimeOnly: 0
-  canFlee: 0
+  canFlee: 1
   onPlayerWon:
     m_PersistentCalls:
       m_Calls: []
@@ -4179,7 +4179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a61554e7129dfff4eb4c0e280af99ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleEncounter
-  enemyCreature: {fileID: 11400000, guid: 2244ff1a3124d8b4ab392f67f35fb96b, type: 2}
+  enemyCreature: {fileID: 11400000, guid: d4e3c5cd976263143b235f9fbc33e6cc, type: 2}
   enemyLevel: 5
   oneTimeOnly: 1
   canFlee: 0

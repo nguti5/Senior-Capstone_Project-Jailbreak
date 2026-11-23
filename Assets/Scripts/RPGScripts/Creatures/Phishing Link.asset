@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b64475936dcc80647b029b8198a810a6, type: 3}
+  m_Name: Phishing Link
+  m_EditorClassIdentifier: Assembly-CSharp::CreatureBase
+  ID: 2
+  creatureName: Phishing Link
+  description: A Phishy creature designed to steal your data.
+  frontSprite: {fileID: 21300000, guid: 16abf9f5f80481e4b82d8819029a15cd, type: 3}
+  hurtSprite: {fileID: 0}
+  type: 1
+  maxHP: 75
+  attack: 30
+  defense: 25
+  spAttack: 40
+  spDefense: 25
+  speed: 50
+  knownAttacks:
+  - attack: {fileID: 11400000, guid: 717506754df58b740a3a90e0c898ccfc, type: 2}
+    level: 0
+  - attack: {fileID: 11400000, guid: 8aaa4ac0f8ca9b843975f10ba1c8e661, type: 2}
+    level: 0
+  - attack: {fileID: 11400000, guid: 3f07db5f57b05b3479d82fa7bdd17b28, type: 2}
+    level: 0

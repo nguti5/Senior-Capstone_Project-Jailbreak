@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b64475936dcc80647b029b8198a810a6, type: 3}
+  m_Name: MemoryLeak
+  m_EditorClassIdentifier: Assembly-CSharp::CreatureBase
+  ID: 3
+  creatureName: Memory Leak
+  description: A mangled collection of bits the gunk up the computer.
+  frontSprite: {fileID: -8750440917290012955, guid: 0ff435a71390ab74593247e483d70024, type: 3}
+  hurtSprite: {fileID: 0}
+  type: 2
+  maxHP: 25
+  attack: 25
+  defense: 75
+  spAttack: 20
+  spDefense: 50
+  speed: 50
+  knownAttacks:
+  - attack: {fileID: 11400000, guid: 8aaa4ac0f8ca9b843975f10ba1c8e661, type: 2}
+    level: 0
+  - attack: {fileID: 11400000, guid: e37d94a25d098ff4f8ca3481669eafb6, type: 2}
+    level: 0
