@@ -68,7 +68,6 @@ public sealed class GameAudio : MonoBehaviour
         RefreshAudioListener();
         if (mode == LoadSceneMode.Additive) return;
 
-        pinned = false;
         CloseOptions();
         PlayMusicForScene(scene);
     }
@@ -120,15 +119,6 @@ public sealed class GameAudio : MonoBehaviour
             music.Play();
         else
             Debug.LogWarning($"Music clip missing for scene '{scene.name}'.");
-    }
-
-    private bool pinned;
-
-    public static void PinOptions(bool pin)
-    {
-        if (instance == null) return;
-        instance.pinned = pin;
-        instance.optionsOpen = pin;
     }
 
     public static void OpenOptions()
@@ -188,8 +178,5 @@ public sealed class GameAudio : MonoBehaviour
 
         GUILayout.FlexibleSpace();
         if (GUILayout.Button("Done")) CloseOptions();
-
-        GUILayout.FlexibleSpace();
-        if (!pinned && GUILayout.Button("Done")) CloseOptions();
     }
 }
