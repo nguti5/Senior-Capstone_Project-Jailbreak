@@ -189,6 +189,7 @@ public class ObjectiveManager : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(finishDelay);   // lets the player see the last box checked
         if (hidePanelWhenDone) panel.SetActive(false);
+        Debug.Log("ObjectiveManager: all objectives complete, firing On All Complete");
         onAllComplete?.Invoke();
     }
 

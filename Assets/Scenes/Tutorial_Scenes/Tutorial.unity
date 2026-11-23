@@ -348,6 +348,63 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 82077865}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1001 &119983524
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5121105775414715108, guid: 19ea4a817d54ad94382c54a80e048a47, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.46982
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121105775414715108, guid: 19ea4a817d54ad94382c54a80e048a47, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121105775414715108, guid: 19ea4a817d54ad94382c54a80e048a47, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4.16654
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121105775414715108, guid: 19ea4a817d54ad94382c54a80e048a47, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121105775414715108, guid: 19ea4a817d54ad94382c54a80e048a47, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121105775414715108, guid: 19ea4a817d54ad94382c54a80e048a47, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121105775414715108, guid: 19ea4a817d54ad94382c54a80e048a47, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121105775414715108, guid: 19ea4a817d54ad94382c54a80e048a47, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121105775414715108, guid: 19ea4a817d54ad94382c54a80e048a47, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5121105775414715108, guid: 19ea4a817d54ad94382c54a80e048a47, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7467757066511834684, guid: 19ea4a817d54ad94382c54a80e048a47, type: 3}
+      propertyPath: m_Name
+      value: SceneTransitionSystem
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 19ea4a817d54ad94382c54a80e048a47, type: 3}
 --- !u!1 &121550710
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,6 +900,7 @@ MonoBehaviour:
   - "Welcome, agent. Something nasty is loose in Grandma Mary's computer, and you\u2019re our best shot."
   - <b>Mouse</b> = look around. Stay sharp. (Yes, the cats are watching.)
   - <b>Arrow keys</b> or <b>WASD</b> = move. Try not to knock anything off the desktop.
+  - <b>Shift</b> when moving = sprint. For when a threat is urgent.
   - <b>E</b> = interact. Open doors, read notes, grab items. Anything that glows can be used, and some doors need a key.
   - <b>O</b> = minimize or maximize your objective list. Shrink it to keep your view clear.
   - <b>I</b> = inventory. Everything you pick up lands here.
@@ -892,7 +950,7 @@ MonoBehaviour:
   panelRect: {fileID: 1365348735}
   toggleKey: 29
   padding: 24
-  finishDelay: 1.5
+  finishDelay: 1
   hidePanelWhenDone: 1
   onAllComplete:
     m_PersistentCalls:
@@ -4251,4 +4309,4 @@ SceneRoots:
   - {fileID: 767120192}
   - {fileID: 219343236}
   - {fileID: 877857854}
-  - {fileID: 861359103}
+  - {fileID: 119983524}
