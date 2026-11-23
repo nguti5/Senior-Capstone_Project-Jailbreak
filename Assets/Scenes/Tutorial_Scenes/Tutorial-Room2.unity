@@ -3592,6 +3592,14 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -2251607273911657052, guid: 83c6a3e21080907498c6022231a05c00, type: 3}
+    - target: {fileID: 4309339970995853242, guid: 61e768b9256fe684f85461639c34b603, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 118858594}
+    - target: {fileID: 4309339970995853242, guid: 61e768b9256fe684f85461639c34b603, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Continue
+      objectReference: {fileID: 0}
     - target: {fileID: 8505471658915778471, guid: 61e768b9256fe684f85461639c34b603, type: 3}
       propertyPath: m_Name
       value: GameOver

@@ -3,16 +3,18 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public void Play(){
+    public void Play()
+    {
         SceneManager.LoadScene("LoadGame");
     }
 
     public void Options()
     {
-        GameAudio.OpenOptions();
+        SceneManager.LoadScene("Options");
     }
 
-    public void Quit(){
+    public void Quit()
+    {
         Application.Quit();
         Debug.Log("Player Has Quit The Game");
     }
