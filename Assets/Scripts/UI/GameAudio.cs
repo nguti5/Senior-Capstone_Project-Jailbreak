@@ -145,13 +145,28 @@ public sealed class GameAudio : MonoBehaviour
     {
         if (!optionsOpen) return;
 
-        var bounds = new Rect(
-            (Screen.width - 320f) / 2f,
-            (Screen.height - 170f) / 2f,
-            320f,
-            170f);
+        const float windowWidth = 320f;
+        const float windowHeight = 170f;
+        const float targetScale = 2f;
 
-        GUI.ModalWindow(AudioOptionsWindowId, bounds, DrawOptions, "Audio Options");
+        // Scale the whole window, including controls and text, and fit smaller views.
+        float scale = Mathf.Min(targetScale, Screen.width / windowWidth, Screen.height / windowHeight);
+        var bounds = new Rect(
+            (Screen.width / scale - windowWidth) / 2f,
+            (Screen.height / scale - windowHeight) / 2f,
+            windowWidth,
+            windowHeight);
+
+        Matrix4x4 previousMatrix = GUI.matrix;
+        try
+        {
+            GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
+            GUI.ModalWindow(AudioOptionsWindowId, bounds, DrawOptions, "Audio Options");
+        }
+        finally
+        {
+            GUI.matrix = previousMatrix;
+        }
     }
 
     private void DrawOptions(int windowId)
