@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleEncounter
   enemyCreature: {fileID: 11400000, guid: e6c46f1585febc54b940e37b865c9db0, type: 2}
-  enemyLevel: 5
+  enemyLevel: 9
   oneTimeOnly: 1
   canFlee: 0
   onPlayerWon:
@@ -2516,7 +2516,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'THE PHISHER:'
+  m_text: 'THE GRAND PHISHER:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2f12bd04a86bfa34698ed390dae39686, type: 2}
   m_sharedMaterial: {fileID: -3092919640954929082, guid: 2f12bd04a86bfa34698ed390dae39686, type: 2}
