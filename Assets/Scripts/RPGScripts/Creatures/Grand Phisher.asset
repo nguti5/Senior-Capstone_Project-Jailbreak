@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 4
   creatureName: Grand Phisher
   description: 'The master of the phising links. Deadly to all who oppose him. '
-  frontSprite: {fileID: 21300000, guid: 169eb359647fd5e409ef2f6192047cda, type: 3}
+  frontSprite: {fileID: -2272508116745367125, guid: f2f158ecedf7e274897c2c04cda224b1, type: 3}
   hurtSprite: {fileID: 5071489067680748367, guid: 969acae2670e88945902b05a2f6fbe9d, type: 3}
   type: 3
   maxHP: 90
