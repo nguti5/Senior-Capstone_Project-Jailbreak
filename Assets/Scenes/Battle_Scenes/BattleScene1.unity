@@ -447,7 +447,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleUnit
   _base: {fileID: 11400000, guid: e66b4f391a98bbc4bbd18b76f37839ef, type: 2}
-  _level: 10
+  _level: 5
   _isPlayer: 0
   startTimeAnimation: 1
   attackTimeAnimation: 0.5

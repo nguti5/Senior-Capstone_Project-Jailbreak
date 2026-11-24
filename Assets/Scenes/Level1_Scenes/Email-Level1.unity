@@ -3341,8 +3341,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a61554e7129dfff4eb4c0e280af99ba1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleEncounter
-  enemyCreature: {fileID: 11400000, guid: d4e3c5cd976263143b235f9fbc33e6cc, type: 2}
-  enemyLevel: 3
+  enemyCreature: {fileID: 11400000, guid: e6c46f1585febc54b940e37b865c9db0, type: 2}
+  enemyLevel: 5
   oneTimeOnly: 0
   canFlee: 1
   onPlayerWon:
